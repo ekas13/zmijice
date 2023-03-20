@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\AIModels">
+      <UniqueIdentifier>{a33f9ebc-aa4d-4192-b875-0d8e8b7c2532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Snakes">
+      <UniqueIdentifier>{e4de5e03-ba83-4d8c-956c-0f6a542d5876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Snakes\AISnakes">
+      <UniqueIdentifier>{0fb5b4ea-5a38-463a-acc9-760e0987db9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{bdb472bf-c57c-47d8-8a56-36eeb0ae7092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AIModels">
+      <UniqueIdentifier>{6d99c472-fa92-4f44-8bb3-962be0a6f3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{0bdd19e1-afc5-4f9a-8978-5959208f06be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Snakes">
+      <UniqueIdentifier>{d8e55b2b-f7ad-4a36-8ae0-fa8e1118fcfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Snakes\AISnakes">
+      <UniqueIdentifier>{3d8eff3b-ef66-4e76-b9aa-487bd34473f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CGP.cpp">
+      <Filter>Source Files\AIModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GP.cpp">
+      <Filter>Source Files\AIModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPNode.cpp">
+      <Filter>Source Files\AIModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NN.cpp">
+      <Filter>Source Files\AIModels</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeBase.cpp">
+      <Filter>Source Files\Snakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeHuman.cpp">
+      <Filter>Source Files\Snakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeHamilton.cpp">
+      <Filter>Source Files\Snakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeAIBase.cpp">
+      <Filter>Source Files\Snakes\AISnakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeAINN.cpp">
+      <Filter>Source Files\Snakes\AISnakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeAIGP.cpp">
+      <Filter>Source Files\Snakes\AISnakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SnakeAICGP.cpp">
+      <Filter>Source Files\Snakes\AISnakes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GenerationManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Simulator.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Point2d.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Random.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Saveable.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initializer.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CGP.h">
+      <Filter>Header Files\AIModels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GenerationManager.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GP.h">
+      <Filter>Header Files\AIModels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NN.h">
+      <Filter>Header Files\AIModels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPNode.h">
+      <Filter>Header Files\AIModels</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Simulator.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeBase.h">
+      <Filter>Header Files\Snakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeHuman.h">
+      <Filter>Header Files\Snakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeHamilton.h">
+      <Filter>Header Files\Snakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeAIBase.h">
+      <Filter>Header Files\Snakes\AISnakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeAICGP.h">
+      <Filter>Header Files\Snakes\AISnakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeAIGP.h">
+      <Filter>Header Files\Snakes\AISnakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SnakeAINN.h">
+      <Filter>Header Files\Snakes\AISnakes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Action.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Direction.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Graphics.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Point2d.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Random.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Saveable.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Initializer.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\apple.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\Arial.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="zmijica.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Zmijica.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

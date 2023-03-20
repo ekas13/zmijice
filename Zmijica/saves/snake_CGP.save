@@ -1,0 +1,14 @@
+----class=
+SnakeAICGP
+----genotype=
+5,7,1,2,1,0,8,11,2,10,1,1,4,4,1,8,6,1,8,0,2,16,13,1,10,14,1,6,3,0,18,4,0,18,17,2,16
+----numOfCols=
+2
+----numOfFunctionArgs=
+2
+----numOfFunctions=
+4
+----numOfRows=
+6
+----visionType=
+raycast7
