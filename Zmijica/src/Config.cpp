@@ -3,7 +3,7 @@
 #include <iostream>
 
 //learningType
-std::string Config::learningType = "MARL_cooperative"; // SARL, MARL_cooperative, MARL_competitive, MARL_mixed
+std::string Config::learningType = "SARL"; // SARL, MARL_cooperative, MARL_competitive, MARL_mixed
 
 // general
 std::string Config::mode = "learn";	   // learn || play
@@ -45,6 +45,19 @@ Config::Config(std::string path) : Saveable(path)
 {
 	// sve varijable treba ucitati pomocu metoda load(ime, varijabla)
 	// try catch je potreban jer neka varijabla moze ne postojati u save fileu
+	try
+	{
+		std::string lt = "";
+		load("learningType", lt);
+		if (lt != "SARL" && lt != "MARL_cooperative" && lt != "MARL_competitive" && lt != "MARL_mixed")
+			throw std::invalid_argument("Invalid learning type.");
+		learningType = lt;
+	}
+	catch (std::invalid_argument err)
+	{
+		std::cout << "learning tyype not found, using default value: " << learningType << std::endl;
+	}
+
 	try
 	{
 		std::string md = "";

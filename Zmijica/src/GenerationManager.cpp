@@ -29,8 +29,6 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
     adjustSnakeScores(allSnakes);
 
     std::sort(allSnakes.begin(), allSnakes.end(), [](SnakeAIBase* s1, SnakeAIBase* s2) {
-        /*if (s1->getScore() == s2->getScore())
-            return s1->getDistanceToApple() < s2->getDistanceToApple();*/
 
         return s1->getScore() > s2->getScore();
         });
