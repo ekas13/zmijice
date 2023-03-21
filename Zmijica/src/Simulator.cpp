@@ -298,6 +298,11 @@ bool Simulator::step()
             currentSnake->pushFront(nextHeadPosition);
             break;
 		default:        //ili zid ili druga zmija
+            if ((atHead >= 2 && atHead <= 5) && atHead != currentSnake->getIndex())   // ako je index neke zmije, a to nije njezin (nije se zabila sama u sebe)
+            {
+                currentSnake->setScore((int)(0.7 * currentSnake->getScore()));
+            }
+
             tempDeadSnakes.push_back(i);
 			deadSnakes.push_back(currentSnake);
             for (int x = 0; x < mapSize; x++){     //brisanje nedavno preminule zmije s mape
