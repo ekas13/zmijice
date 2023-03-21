@@ -6,6 +6,7 @@
 #include "Random.h"
 #include <algorithm>
 #include <iostream>
+#include <function>
 
 std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
 {
@@ -26,6 +27,8 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
         allSnakes.insert(allSnakes.begin(), simSnakes.begin(), simSnakes.end());
     }
 
+    adjustSnakeScores(allSnakes);
+
     std::sort(allSnakes.begin(), allSnakes.end(), [](SnakeAIBase* s1, SnakeAIBase* s2) {
         /*if (s1->getScore() == s2->getScore())
             return s1->getDistanceToApple() < s2->getDistanceToApple();*/
@@ -34,6 +37,25 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
         });
 
     return allSnakes;
+}
+
+void GenerationManager::adjustSnakeScores(std::vector<SnakeAIBase*>& allSnakes)
+{
+    if (Config::learningType == "SARL")
+        return;
+    else if (Config::learningType == "MARL_cooperative")
+    {
+        
+    }
+    else if (Config::learningType == "MARL_competitive")
+    {
+
+    }
+    else if (Config::learningType == "MARL_mixed")
+    {
+
+    }
+
 }
 
 std::vector<const SnakeAIBase*> GenerationManager::cullCutoff(unsigned int count)

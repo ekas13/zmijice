@@ -39,6 +39,11 @@ int SnakeBase::getScore()
     return score;
 }
 
+void SnakeBase::setScore(int newScore)
+{
+    this->score = newScore;
+}
+
 void SnakeBase::pushFront(Point2d newHeadPosition)
 {
     this->snakeCells.push_front(newHeadPosition);

@@ -5,6 +5,7 @@
 
 struct Config : public Saveable
 {
+	static std::string learningType;
 	static std::string mode;
 	static std::string playModePlayer1;
 	static std::string playModePlayer2;

@@ -14,6 +14,7 @@ private:
 	bool hasApple;
 	unsigned int mapSize;
 	void addSnake(std::string type, Point2d startPosition);
+	int simulatorScore;
 
 public:
 	Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes = std::vector<SnakeBase*>());
@@ -25,6 +26,8 @@ public:
 
 	std::vector<std::shared_ptr<SnakeBase>>& getLiveSnakes();
 	std::vector<std::shared_ptr<SnakeBase>>& getDeadSnakes();
+	int getCumulativeSimulatorScore();
+	int getNoOfDeadSnakes();
 
 	/// returns 1 if simulator has at least one live snake 
 	bool step();

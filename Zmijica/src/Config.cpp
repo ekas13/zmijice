@@ -2,6 +2,9 @@
 #include <stdexcept>
 #include <iostream>
 
+//learningType
+std::string Config::learningType = "MARL_cooperative"; // SARL, MARL_cooperative, MARL_competitive, MARL_mixed
+
 // general
 std::string Config::mode = "learn";	   // learn || play
 unsigned int Config::snakesPerSim = 2; // max 4 (treba provjeriti prilikom ucitavanja)

@@ -16,6 +16,7 @@ private:
     std::vector<const SnakeAIBase*> cullGeometric(unsigned int count);
     std::vector<const SnakeAIBase*> cull();
     void generateSnakes(std::vector<SnakeAIBase*>& newSnakes, std::vector<const SnakeAIBase*> seed);
+    void adjustSnakeScores(std::vector<SnakeAIBase*>& allSnakes);
 
 public:
     GenerationManager();

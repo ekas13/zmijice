@@ -55,6 +55,7 @@ void Simulator::addSnake(std::string type, Point2d startPosition)
 Simulator::Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes)
 {
     this->mapSize = mapSize;
+    this->simulatorScore = 0;
 
     this->map.resize(mapSize, std::vector<int>(mapSize));
     this->hasApple = false; //na pocetku nema jabuke
@@ -140,6 +141,16 @@ std::vector<std::shared_ptr<SnakeBase>>& Simulator::getLiveSnakes()
 std::vector<std::shared_ptr<SnakeBase>>& Simulator::getDeadSnakes()
 {
     return deadSnakes;
+}
+
+int Simulator::getCumulativeSimulatorScore()
+{
+    return simulatorScore;
+}
+
+int Simulator::getNoOfDeadSnakes()
+{
+    return this->deadSnakes.size();
 }
 
 bool Simulator::step()
@@ -281,6 +292,7 @@ bool Simulator::step()
         }
 		case(1):        //jabuka
 			currentSnake->addScore();
+            this->simulatorScore++;
             this->hasApple = false;
             this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;
             currentSnake->pushFront(nextHeadPosition);
