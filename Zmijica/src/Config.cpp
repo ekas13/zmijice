@@ -55,7 +55,7 @@ Config::Config(std::string path) : Saveable(path)
 	}
 	catch (std::invalid_argument err)
 	{
-		std::cout << "learning tyype not found, using default value: " << learningType << std::endl;
+		std::cout << "learning type not found, using default value: " << learningType << std::endl;
 	}
 
 	try
