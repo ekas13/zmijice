@@ -6,7 +6,6 @@
 #include "Random.h"
 #include <algorithm>
 #include <iostream>
-#include <function>
 
 std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
 {
@@ -45,10 +44,21 @@ void GenerationManager::adjustSnakeScores(std::vector<SnakeAIBase*>& allSnakes)
         return;
     else if (Config::learningType == "MARL_cooperative")
     {
-        
+        for (int i = 0, n = allSnakes.size(); i < n; i++)
+        {
+            Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
+            SnakeAIBase* snake = allSnakes[i];
+            snake->setScore(sim.getCumulativeSimulatorScore()-sim.getNoOfDeadSnakes());
+        }
     }
     else if (Config::learningType == "MARL_competitive")
     {
+        for (int i = 0, n = allSnakes.size(); i < n; i++)
+        {
+            Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
+            SnakeAIBase* snake = allSnakes[i];
+            snake->setScore(snake->getScore()-(Config::snakesPerSim - sim.getNoOfDeadSnakes()));
+        }
 
     }
     else if (Config::learningType == "MARL_mixed")
