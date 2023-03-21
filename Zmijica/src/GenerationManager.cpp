@@ -6,10 +6,12 @@
 #include "Random.h"
 #include <algorithm>
 #include <iostream>
+#include <map>
 
 std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
 {
     std::vector<SnakeAIBase*> allSnakes;
+    std::map <SnakeAIBase*, std::string> allSnakesMap;
 
     for (Simulator s : allSimulators)
     {
@@ -17,16 +19,19 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
         for (std::shared_ptr<SnakeBase> sn : s.getLiveSnakes())
         {
             simSnakes.push_back((SnakeAIBase*)sn.get());
+            allSnakesMap.insert({(SnakeAIBase*)sn.get(),"alive"});
+
         }
         for (std::shared_ptr<SnakeBase> sn : s.getDeadSnakes())
         {
             simSnakes.push_back((SnakeAIBase*)sn.get());
+            allSnakesMap.insert({ (SnakeAIBase*)sn.get(),"died" });
         }
 
         allSnakes.insert(allSnakes.begin(), simSnakes.begin(), simSnakes.end());
     }
 
-    adjustSnakeScores(allSnakes);
+    adjustSnakeScores(allSnakesMap);
 
     std::sort(allSnakes.begin(), allSnakes.end(), [](SnakeAIBase* s1, SnakeAIBase* s2) {
 
@@ -36,27 +41,39 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
     return allSnakes;
 }
 
-void GenerationManager::adjustSnakeScores(std::vector<SnakeAIBase*>& allSnakes)
+void GenerationManager::adjustSnakeScores(std::map <SnakeAIBase*, std::string>& allSnakesMap)
 {
     if (Config::learningType == "SARL")
         return;
     else if (Config::learningType == "MARL_cooperative")
     {
-        for (int i = 0, n = allSnakes.size(); i < n; i++)
+        int i = 0;
+        int n = allSnakesMap.size();
+        for (auto itr = allSnakesMap.begin(); itr != allSnakesMap.end(); ++itr, i++)
         {
             Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
-            SnakeAIBase* snake = allSnakes[i];
-            snake->setScore(sim.getCumulativeSimulatorScore()-sim.getNoOfDeadSnakes());
+            SnakeAIBase* snake = itr->first;
+            if(itr->second == "dead")
+                snake->setScore((int)(0.5*snake->getScore()));
+            else 
+                snake->setScore(snake->getScore());
         }
+        //for (int i = 0, n = allSnakes.size(); i < n; i++)
+        //{
+        //    Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
+        //    SnakeAIBase* snake = allSnakes[i];
+        //    float percentage = (float)(Config::snakesPerSim - sim.getNoOfDeadSnakes()) / Config::snakesPerSim;
+        //    snake->setScore((Config::snakesPerSim - sim.getNoOfDeadSnakes()) * sim.getCumulativeSimulatorScore());
+        //}
     }
     else if (Config::learningType == "MARL_competitive")
     {
-        for (int i = 0, n = allSnakes.size(); i < n; i++)
-        {
-            Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
-            SnakeAIBase* snake = allSnakes[i];
-            snake->setScore(snake->getScore()-(Config::snakesPerSim - sim.getNoOfDeadSnakes()));
-        }
+        //for (int i = 0, n = allSnakes.size(); i < n; i++)
+        //{
+        //    Simulator sim = allSimulators[(n - 1 - i) / Config::snakesPerSim];
+        //    SnakeAIBase* snake = allSnakes[i];
+        //    snake->setScore(snake->getScore()-(Config::snakesPerSim - sim.getNoOfDeadSnakes()));
+        //}
 
     }
     else if (Config::learningType == "MARL_mixed")
