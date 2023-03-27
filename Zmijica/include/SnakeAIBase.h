@@ -23,19 +23,20 @@ private:
 
 protected:
     //za zadanu mapu, vrati za svih 7 smjerova zmije vector tipa [udaljenost1, tipObjekta1, ... udaljenost7, tipObjekta7] 
-    std::vector<float> getInputs(std::vector<std::vector<int>> map);
+    //std::vector<float> getInputs(std::vector<std::vector<int>> map);
     unsigned int getNumberOfInputs() const;
-    virtual void saveSnakeData() = 0;
+    void saveSnakeData();
 
 public:
     SnakeAIBase(Point2d headPosition, int index);
     SnakeAIBase(Point2d headPosition, int index, std::string path);
     void setVisionType(std::string type);
-    virtual ~SnakeAIBase();
-    virtual void cross(SnakeAIBase& other, std::string typeOfCross) = 0;
-    virtual void mutate(float chanceOfMutation) = 0;
-    virtual Action step(std::vector<std::vector<int>> map) override;
-    virtual void addScore() override;
+     ~SnakeAIBase();
+    void cross(SnakeAIBase& other, std::string typeOfCross);
+    void mutate(float chanceOfMutation);
+    Action step(std::vector<std::vector<int>> map);
+    void addScore();
     int getStepsSinceLastApple();
     int getDistanceToApple();
+    std::vector<float> getInputs(std::vector<std::vector<int>> map);
 };

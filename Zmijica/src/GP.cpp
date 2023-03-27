@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include "GP.h"
 #include <string>
-#include "GPNode.h"
 #include "Random.h"
 #include <iostream>
 

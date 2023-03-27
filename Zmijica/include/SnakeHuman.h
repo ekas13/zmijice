@@ -10,6 +10,6 @@ private:
 	static bool userArrowInputConsumed;
 public:
 	SnakeHuman(Point2d headPosition, int index);
-	Action step(std::vector<std::vector<int>> map) override;
+	Action step(std::vector<std::vector<int>> map) ;
 	static void pushUserArrowInput(Direction d);
 };

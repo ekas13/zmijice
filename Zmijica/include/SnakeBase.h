@@ -22,5 +22,5 @@ public:
     int getScore();
     void setScore(int newScore);
     std::list<Point2d> getSnakeCells();
-    virtual Action step(std::vector<std::vector<int>> map) = 0;
+    Action step(std::vector<std::vector<int>> map);
 };

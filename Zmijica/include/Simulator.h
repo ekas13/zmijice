@@ -15,6 +15,7 @@ private:
 	unsigned int mapSize;
 	void addSnake(std::string type, Point2d startPosition);
 	int simulatorScore;
+	Action getSnakeStep(int snakeIndex);
 
 public:
 	Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes = std::vector<SnakeBase*>());
