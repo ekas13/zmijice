@@ -160,6 +160,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GenerationManagerBase.cpp" />
+    <ClCompile Include="src\SimulatorBase.cpp" />
+    <ClCompile Include="src\Snake.cpp" />
     <ClCompile Include="src\CGP.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\GenerationManager.cpp" />
@@ -180,8 +183,13 @@
     <ClCompile Include="src\SnakeBase.cpp" />
     <ClCompile Include="src\SnakeHamilton.cpp" />
     <ClCompile Include="src\SnakeHuman.cpp" />
+    <ClCompile Include="src\Team.cpp" />
+    <ClCompile Include="src\TeamGenerationManager.cpp" />
+    <ClCompile Include="src\TeamSimulator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GenerationManagerBase.h" />
+    <ClInclude Include="include\SimulatorBase.h" />
     <ClInclude Include="include\Action.h" />
     <ClInclude Include="include\CGP.h" />
     <ClInclude Include="include\Config.h" />
@@ -204,6 +212,10 @@
     <ClInclude Include="include\SnakeBase.h" />
     <ClInclude Include="include\SnakeHamilton.h" />
     <ClInclude Include="include\SnakeHuman.h" />
+    <ClInclude Include="include\TeamGenerationManager.h" />
+    <ClInclude Include="include\TeamSimulator.h" />
+    <ClInclude Include="include\Snake.h" />
+    <ClInclude Include="include\Team.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico" />
