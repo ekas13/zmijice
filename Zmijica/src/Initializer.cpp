@@ -1,10 +1,12 @@
 #include "Initializer.h"
 #include "Graphics.h"
 #include "Simulator.h"
+#include "TeamSimulator.h"
 #include "SnakeHuman.h"
 #include "Direction.h"
 #include "Config.h"
 #include "GenerationManager.h"
+#include "TeamGenerationManager.h"
 #include <fstream>
 
 void Initializer::saveSimSnake(Simulator* sim)
@@ -32,6 +34,20 @@ void Initializer::saveSimSnake(Simulator* sim)
         check.close();
 
     toSave->save("./saves/snake_" + std::to_string(index) + ".save");
+}
+
+void Initializer::initializeCooperativePlay()
+{
+    unsigned int stepSpeed = 1;
+    TeamGenerationManager manager;
+    TeamSimulator* firstLive = nullptr;
+    while (true)
+    {      
+        firstLive = manager.step();
+        if (!firstLive) {
+            manager.nextGeneration();
+        }  
+    }
 }
 
 void Initializer::initializeLearn()

@@ -85,7 +85,7 @@ std::vector<float> SnakeAIBase::getInputsRaycast7(std::vector<std::vector<int>> 
 
     std::vector<std::vector<int>> directions = this->calculateDirections();
 
-    for (int i=0; i<DIRECTIONS; i++) {
+    for (int i = 0; i < DIRECTIONS; i++) {
         std::vector<int> currentDirection = directions[i];
         std::vector<float> nearestObject = this->calculateNearestDistance(currentDirection, map);
         inputs.push_back(nearestObject[0]);

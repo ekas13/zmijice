@@ -16,11 +16,11 @@ public:
     SnakeBase(Point2d headPosition, int index);
     virtual ~SnakeBase();
     int getIndex();
-    virtual void addScore();
+    void addScore();
     void pushFront(Point2d newHeadPosition);
     void popBack();
     int getScore();
     void setScore(int newScore);
     std::list<Point2d> getSnakeCells();
-    Action step(std::vector<std::vector<int>> map);
+    virtual Action step(std::vector<std::vector<int>> map) = 0;
 };

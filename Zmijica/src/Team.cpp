@@ -1,20 +1,23 @@
 #include "Team.h"
 #include "Config.h"
 #include "SnakeBase.h"
-
+#include <algorithm>
 Team::Team()
 {
-    this->model = new GP(Config::numOfFunctions, Config::numOfFunctions, 28);
-    this->teamScore = 0;  
+    this->model = new GP(Config::maxDepth, Config::numOfFunctions, 28);
+    this->teamScore = 0;
+
 }
 
 Team::Team(const Team& oldTeam)
 {
+    this->teamScore = 0;
     this->model = new GP(oldTeam.model);
+
 }
 
 void Team::addSnake(SnakeBase* snake) {
-    this->snakes.push_back(*snake);
+    this->snakes.push_back(snake);
 }
 
 std::vector<Action> Team::step(std::vector<std::vector<int>> map)
@@ -23,14 +26,15 @@ std::vector<Action> Team::step(std::vector<std::vector<int>> map)
     std::vector<float> inputs;
     for (int i = 0; i < snakes.size(); i++)
     {
-        SnakeAIBase* currentSnake = dynamic_cast<SnakeAIBase*>(&snakes[i]);
+        SnakeAIBase* currentSnake = dynamic_cast<SnakeAIBase*>(snakes[i]);
         inputs = currentSnake->getInputs(map);
+
         teamInputs.insert(teamInputs.end(), inputs.begin(), inputs.end());
     }
     float output = model->calculateOutput(teamInputs).at(0);
     std::vector<Action> steps = mapToActions(output);
     return steps;
-    agentsStep(steps);
+    //agentsStep(steps);
 }
 
 std::vector<Action> Team::mapToActions(float output)
@@ -69,6 +73,7 @@ void Team::mutate(float chanceOfMutation)
 
 void Team::addTeamScore()
 {
+    int a = this->teamScore;
     this->teamScore++;
 }
 
@@ -86,3 +91,14 @@ void Team::setTeamScore(int score)
 {
     this->teamScore = score;
 }
+
+void Team::removeSnakeAt(int index)
+{
+    //printf("remove: %d with %d living", index,this->getNoOfAliveSnakes());
+    //this->snakes.erase(std::remove(snakes.begin(), snakes.end(), index), snakes.end());
+    this->snakes.erase(snakes.begin() + (index % this->getNoOfAliveSnakes()));
+}
+
+
+
+//pazi brišeš nemoj onda loopat po njima

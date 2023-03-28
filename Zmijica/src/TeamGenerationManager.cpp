@@ -1,6 +1,7 @@
 #include "TeamGenerationManager.h"
 #include "Config.h"
 #include "Random.h"
+#include <algorithm>
 
 
 
@@ -10,21 +11,32 @@ std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
 
     for (TeamSimulator s : allSimulators)
     {
-        for (Team*t : s.getTeams()) 
+        for (std::shared_ptr<Team> t : s.getTeams())
         {
-            teams.push_back(t);
+            teams.push_back((Team*)t.get());
         }
 
     }
 
-    adjustTeamScores(teams);
+    //adjustTeamScores(teams);
 
     std::sort(teams.begin(), teams.end(), [](Team* t1, Team* t2) {
 
         return t1->getTeamScore() > t2->getTeamScore();
         });
 
+    printBest10teams(teams);
+
     return teams;
+}
+void TeamGenerationManager::printBest10teams(std::vector<Team*> teams)
+{
+    for (int i = 0; i < 10; i++)
+    {
+        printf("\n%d. team with a team score of:""%d", i + 1, teams.at(i)->getTeamScore());
+        printf("\n and number of snakes alive: ""%d", teams.at(i)->getNoOfAliveSnakes());
+
+    }
 }
 
 void TeamGenerationManager::adjustTeamScores(std::vector<Team*> teams)
@@ -103,6 +115,7 @@ void TeamGenerationManager::generateTeams(std::vector<Team*>& newSnakes, std::ve
 
 void TeamGenerationManager::nextGeneration()
 {
+    printf("\nGeneration %d", genNumber);
     std::vector<const Team*> seed = cull();
     std::vector<Team*> newTeams;
     generateTeams(newTeams, seed);
@@ -150,7 +163,7 @@ TeamGenerationManager::TeamGenerationManager()
         {
             simTeams.push_back(new Team());
         }
-        TeamSimulator sim(Config::mapSize,simTeams);
+        TeamSimulator sim(Config::mapSize, simTeams);
         allSimulators.push_back(sim);
     }
 }
@@ -158,11 +171,10 @@ TeamGenerationManager::TeamGenerationManager()
 TeamSimulator* TeamGenerationManager::step()
 {
     TeamSimulator* firstWithSnake = nullptr;
-
     for (int i = 0; i < allSimulators.size(); i++)
     {
         if (allSimulators.at(i).step() && !firstWithSnake)
-            firstWithSnake = &allSimulators.at(i);
+            firstWithSnake = &allSimulators.at(i); // treba se jo¹ vrtit - generation manager ga vrti sve dok zadnji sim ne umre (sve dok ima bar jedna ¾iva zmija) - zato step vraæa ima li ¾ivih zmija ili ne
     }
     return firstWithSnake;
 }

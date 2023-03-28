@@ -187,7 +187,7 @@ Graphics::Graphics(unsigned int width, unsigned int height, std::string title, S
 	statText.setFont(font);
 	statText.setFillColor(sf::Color::White);
 	statText.setCharacterSize(16);
-	
+
 	bgSprite.setTexture(bgTexture);
 	updateSize(bgSprite, 1);
 

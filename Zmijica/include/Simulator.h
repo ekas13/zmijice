@@ -5,7 +5,7 @@
 #include "SnakeBase.h"
 #include <string>
 
-class Simulator
+class Simulator 
 {
 private:
 	std::vector<std::vector<int>> map;

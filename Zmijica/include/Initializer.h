@@ -10,4 +10,5 @@ private:
 public:
 	static void initializeLearn();
 	static void initializePlay();
+	static void initializeCooperativePlay();
 };

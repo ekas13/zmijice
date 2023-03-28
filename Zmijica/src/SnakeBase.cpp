@@ -58,3 +58,8 @@ std::list<Point2d> SnakeBase::getSnakeCells()
 {
     return this->snakeCells;
 }
+
+//Action SnakeBase::step(std::vector<std::vector<int>> map)
+//{
+//    return STRAIGHT;
+//}

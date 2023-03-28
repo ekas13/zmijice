@@ -5,7 +5,7 @@
 #include "Simulator.h"
 #include "SnakeAIBase.h"
 
-class GenerationManager
+class GenerationManager 
 {
 private:
     std::vector<Simulator> allSimulators;

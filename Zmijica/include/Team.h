@@ -6,16 +6,17 @@
 #include "SnakeAIBase.h"
 #include <string>
 #include "GP.h"
+#include "Snake.h"
 
 class Team
 {
 private:
 	GP* model;
-	std::vector<SnakeBase> snakes;
+	std::vector<SnakeBase*> snakes;
 	int teamScore;
 	std::vector<Action> mapToActions(float output);
-	std::vector<Action> agentsStep(std::vector<Action> steps);
-	 
+	//std::vector<Action> agentsStep(std::vector<Action> steps);
+
 public:
 	Team();//unsigned int mapSize, std::vector<SnakeAIBase*> snakes);
 	Team(const Team& oldTeam);
@@ -27,4 +28,5 @@ public:
 	int getNoOfAliveSnakes();
 	void addSnake(SnakeBase* snake);
 	void addTeamScore();
+	void removeSnakeAt(int index);
 };

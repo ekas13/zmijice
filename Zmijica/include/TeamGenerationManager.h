@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "TeamSimulator.h"
-
+#include <algorithm>
 
 class TeamGenerationManager
 {
@@ -18,6 +18,7 @@ private:
     std::vector<const Team*> cull();
     void generateTeams(std::vector<Team*>& newTeams, std::vector<const Team*> seed);
     void adjustTeamScores(std::vector<Team*> teams);
+    void printBest10teams(std::vector<Team*> teams);
 
 public:
     TeamGenerationManager();

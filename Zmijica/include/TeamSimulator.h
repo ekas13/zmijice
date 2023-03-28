@@ -5,15 +5,17 @@
 #include "SnakeBase.h"
 #include <string>
 #include "Team.h"
+#include "SimulatorBase.h"
 
-class TeamSimulator
+class TeamSimulator 
 {
 private:
 	std::vector<std::vector<int>> map;
-	std::vector<Team*> teams;
-	std::vector<SnakeBase*> liveSnakes;
+	std::vector<std::shared_ptr<Team>> teams;
+	std::vector<std::shared_ptr<SnakeBase>> liveSnakes;
 	bool hasApple;
 	unsigned int mapSize;
+	int steps;
 
 public:
 	TeamSimulator(unsigned int mapSize, std::vector<Team*> teams);
@@ -22,8 +24,8 @@ public:
 
 	/// <returns>Map matrix as vector of vectors</returns>
 	std::vector<std::vector<int>> getMap();
-
-	std::vector<Team*> getTeams();
+	std::vector<std::shared_ptr<SnakeBase>>& getLiveSnakes();
+	std::vector<std::shared_ptr<Team>>& getTeams();
 
 	bool step();
 };
