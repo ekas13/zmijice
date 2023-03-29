@@ -33,8 +33,12 @@ void TeamGenerationManager::printBest10teams(std::vector<Team*> teams)
 {
     for (int i = 0; i < 10; i++)
     {
-        printf("\n%d. team with a team score of:""%d", i + 1, teams.at(i)->getTeamScore());
-        printf("\n and number of snakes alive: ""%d", teams.at(i)->getNoOfAliveSnakes());
+        printf("\n%d. team with a team score of: %d", i + 1, teams.at(i)->getTeamScore());
+        printf("\n and number of snakes alive: %d", teams.at(i)->getNoOfAliveSnakes());
+        printf("\nindividual snake score -> ");
+        std::vector<int> scores = teams.at(i)->allSnakeScores();
+        printf("Snake 1: %d    Snake 2: %d", scores[0], scores[1]);
+        //printf("Snake 1: %d    Snake 2: %d",7, scores[1]);
 
     }
 }
@@ -173,8 +177,9 @@ TeamSimulator* TeamGenerationManager::step()
     TeamSimulator* firstWithSnake = nullptr;
     for (int i = 0; i < allSimulators.size(); i++)
     {
-        if (allSimulators.at(i).step() && !firstWithSnake)
+        if (allSimulators.at(i).step() && !firstWithSnake) {
             firstWithSnake = &allSimulators.at(i); // treba se jo¹ vrtit - generation manager ga vrti sve dok zadnji sim ne umre (sve dok ima bar jedna ¾iva zmija) - zato step vraæa ima li ¾ivih zmija ili ne
+        }
     }
     return firstWithSnake;
 }

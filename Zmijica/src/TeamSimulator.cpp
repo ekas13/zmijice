@@ -14,7 +14,7 @@ TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams)
     this->hasApple = false; //na pocetku nema jabuke
     Point2d snakeStartPosition = Point2d(mapSize / 2, mapSize / 2);
 
-    //this->teams;
+    //this->teams; 
 
     snakeStartPosition.setLocation(snakeStartPosition.getX(), Config::mapSize / (sentTeams.size() * 2) / 2);
     //trebat ce kopirati team-ove iz gen managera?
@@ -27,12 +27,12 @@ TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams)
         {
 
             SnakeBase* snake = new Snake(snakeStartPosition, liveSnakes.size());
-            liveSnakes.push_back(std::shared_ptr<SnakeBase>(snake));
-            this->teams[i]->addSnake(snake);
-            int a = this->teams[i]->getNoOfAliveSnakes();
+            std::shared_ptr<SnakeBase> base = std::shared_ptr<SnakeBase>(snake);
+            liveSnakes.push_back(base);
+            //liveSnakes.push_back(std::shared_ptr<SnakeBase>(snake));
+            this->teams[i]->addSnake(base);
             snakeStartPosition.setLocation(snakeStartPosition.getX(), snakeStartPosition.getY() + Config::mapSize / (sentTeams.size() * 2));
         }
-
     }
 
     // "crtanje" ¾ivih zmija u matricu
@@ -127,7 +127,7 @@ bool TeamSimulator::step()
 
 
         SnakeBase* currentSnake = &*liveSnakes[i];
-
+        std::shared_ptr<SnakeBase> base = liveSnakes[i];
         int snakeIndex = currentSnake->getIndex() + 2; // indeks zmije za prikaz na mapi
         Action result = steps[i % 2];
         std::list<Point2d> snakeCells = currentSnake->getSnakeCells();
@@ -230,6 +230,7 @@ bool TeamSimulator::step()
             }
 
             tempDeadSnakes.push_back(i);
+            this->teams[i / 2]->addDeadSnake(base);
             this->teams[i / 2]->removeSnakeAt(i);
             //deadSnakes.push_back(currentSnake);
             for (int x = 0; x < mapSize; x++) {     //brisanje nedavno preminule zmije s mape

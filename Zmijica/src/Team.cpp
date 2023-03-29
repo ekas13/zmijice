@@ -16,7 +16,8 @@ Team::Team(const Team& oldTeam)
 
 }
 
-void Team::addSnake(SnakeBase* snake) {
+void Team::addSnake(std::shared_ptr<SnakeBase> snake)
+{
     this->snakes.push_back(snake);
 }
 
@@ -26,7 +27,8 @@ std::vector<Action> Team::step(std::vector<std::vector<int>> map)
     std::vector<float> inputs;
     for (int i = 0; i < snakes.size(); i++)
     {
-        SnakeAIBase* currentSnake = dynamic_cast<SnakeAIBase*>(snakes[i]);
+        std::shared_ptr<SnakeBase> snake = snakes[i];
+        SnakeAIBase* currentSnake = dynamic_cast<SnakeAIBase*>(snake.get());
         inputs = currentSnake->getInputs(map);
 
         teamInputs.insert(teamInputs.end(), inputs.begin(), inputs.end());
@@ -90,6 +92,52 @@ int Team::getTeamScore()
 void Team::setTeamScore(int score)
 {
     this->teamScore = score;
+}
+
+void Team::addDeadSnake(std::shared_ptr<SnakeBase> snake)
+{
+    this->deadSnakes.push_back(snake);
+}
+
+std::vector<std::shared_ptr<SnakeBase>>& Team::getLiveSnakes()
+{
+    return this->snakes;
+}
+
+std::vector<std::shared_ptr<SnakeBase>>& Team::getDeadSnakes()
+{
+    return this->deadSnakes;
+}
+
+std::vector<int> Team::allSnakeScores()
+{
+    std::vector<std::shared_ptr<SnakeBase>> allSnakes;
+    int b = allSnakes.size();
+    int al = this->snakes.size();
+    int bl = this->deadSnakes.size();
+    int alive = this->getLiveSnakes().size();
+    int dead = this->getDeadSnakes().size();
+
+    for (std::shared_ptr<SnakeBase> sn : this->getLiveSnakes()) {
+        allSnakes.push_back(sn);
+    }
+    for (std::shared_ptr<SnakeBase> sn : this->getDeadSnakes()) {
+        allSnakes.push_back(sn);
+    }
+    int a = allSnakes.size();
+    int first = allSnakes[0]->getScore();
+    int second = allSnakes[1]->getScore();
+    return std::vector<int>{first,second};
+}
+
+int Team::getFirstSnakeScore()
+{
+    return this->allSnakeScores()[0];
+}
+
+int Team::getSecondSnakeScore()
+{
+    return this->allSnakeScores()[1];
 }
 
 void Team::removeSnakeAt(int index)

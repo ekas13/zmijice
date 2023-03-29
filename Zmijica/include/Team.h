@@ -12,11 +12,11 @@ class Team
 {
 private:
 	GP* model;
-	std::vector<SnakeBase*> snakes;
+	std::vector<std::shared_ptr<SnakeBase>> snakes;
+	std::vector<std::shared_ptr<SnakeBase>> deadSnakes;
 	int teamScore;
 	std::vector<Action> mapToActions(float output);
 	//std::vector<Action> agentsStep(std::vector<Action> steps);
-
 public:
 	Team();//unsigned int mapSize, std::vector<SnakeAIBase*> snakes);
 	Team(const Team& oldTeam);
@@ -26,7 +26,13 @@ public:
 	int getTeamScore();
 	void setTeamScore(int score);
 	int getNoOfAliveSnakes();
-	void addSnake(SnakeBase* snake);
+	void addSnake(std::shared_ptr<SnakeBase> snake);
 	void addTeamScore();
 	void removeSnakeAt(int index);
+	void addDeadSnake(std::shared_ptr<SnakeBase> snake);
+	std::vector<std::shared_ptr<SnakeBase>>& getLiveSnakes();
+	std::vector<std::shared_ptr<SnakeBase>>& getDeadSnakes();
+	int getFirstSnakeScore();
+	int getSecondSnakeScore();
+	std::vector<int> allSnakeScores();
 };
