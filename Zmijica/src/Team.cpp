@@ -4,6 +4,7 @@
 #include <algorithm>
 Team::Team()
 {
+    //this->model = new CGP(28, 1, Config::numOfRows, Config::numOfCols, Config::numOfFunctions, Config::numOfFunctionArgs);
     this->model = new GP(Config::maxDepth, Config::numOfFunctions, 28);
     this->teamScore = 0;
 
@@ -12,6 +13,7 @@ Team::Team()
 Team::Team(const Team& oldTeam)
 {
     this->teamScore = 0;
+    //this->model = new CGP(oldTeam.model);
     this->model = new GP(oldTeam.model);
 
 }
@@ -39,26 +41,28 @@ std::vector<Action> Team::step(std::vector<std::vector<int>> map)
     //agentsStep(steps);
 }
 
-std::vector<Action> Team::mapToActions(float output)
+std::vector<Action> Team::mapToActions(float given_output)
 {
-    /*if (output < -15)
+    int output = static_cast<int>(given_output);
+    if (output < -15)
         return std::vector<Action>{LEFT, LEFT};
-    else if (-15 <= output < -10)
+    else if (-15 <= output && output < -10)
         return std::vector<Action>{ LEFT, RIGHT };
-    else if (-10 <= output < -5)
+    else if (-10 <= output && output < -5)
         return { RIGHT,LEFT };
-    else if (-5 <= output < -1)
+    else if (-5 <= output && output < -1)
         return std::vector<Action>{ RIGHT, STRAIGHT };
-    else if (-1 <= output < 0)
+    else if (-1 <= output && output < 0)
         return std::vector<Action>{ STRAIGHT, RIGHT };
-    else if (0 <= output < 1)
+    else if (0 <= output && output < 1)
         return std::vector<Action>{ STRAIGHT, LEFT};
-    else if (1 <= output < 5)
+    else if (1 <= output && output < 5)
         return std::vector<Action>{ LEFT, STRAIGHT};
-    else if (5 <= output < 10)
+    else if (5 <= output && output < 10)
         return std::vector<Action>{ RIGHT, RIGHT };
     else if (10 <= output)
-        return std::vector<Action>{ STRAIGHT, STRAIGHT};*/
+        return std::vector<Action>{ STRAIGHT, STRAIGHT};
+    /*printf("\nOutput: %f", output);
     float outputBound = 0.5;
     if (output < -1.75)
         return std::vector<Action>{LEFT, LEFT};
@@ -77,7 +81,45 @@ std::vector<Action> Team::mapToActions(float output)
     else if (1.25 < output < 1.75)
         return std::vector<Action>{ RIGHT, RIGHT };
     else if (1.75 < output)
+        return std::vector<Action>{ STRAIGHT, STRAIGHT};*/
+    
+    //printf("\nOutput: %d", output);
+    /*if (output < -15) {
+        printf("  L L");
+        return std::vector<Action>{LEFT, LEFT};
+    }
+    else if (-15 <= output&& output < -10) {
+        printf("  S R");
+        return std::vector<Action>{ STRAIGHT, RIGHT };
+    }
+    else if (-10 <= output && output < -5) {
+        printf("  R L");
+        return { RIGHT,LEFT };
+    }
+    else if (-5 <= output && output < -1) {
+        printf("  R S");
+        return std::vector<Action>{ RIGHT, STRAIGHT };
+    }
+    else if (-1 <= output && output < 0) {
+        printf("  L R");
+        return std::vector<Action>{ LEFT, RIGHT };
+    }
+    else if (0 <= output && output < 1) {
+        printf("  S L");
+        return std::vector<Action>{ STRAIGHT, LEFT};
+    }
+    else if (1 <= output && output < 5) {
+        printf("  L S");
+        return std::vector<Action>{ LEFT, STRAIGHT};
+    }
+    else if (5 <= output && output < 10) {
+        printf("  R R");
+        return std::vector<Action>{ RIGHT, RIGHT };
+    }
+    else if (10 <= output) {
+        printf("  S S");
         return std::vector<Action>{ STRAIGHT, STRAIGHT};
+    }*/
 }
 
 void Team::cross(Team& other, std::string typeOfCross)

@@ -224,6 +224,10 @@ void GP::distributeInputs(GPNode* node, std::vector<float> inputs, int* index) {
 }
 
 std::vector<float> GP::calculateOutput(std::vector<float> inputs) {
+    for (int i = 0; i < inputs.size(); i++)
+    {
+        //printf("%f  ", inputs.at(i));
+    }
     int index = 0;
     int* p_index = &index;
     GP::distributeInputs(this->GPData.root, inputs,p_index);
@@ -248,18 +252,24 @@ float GP::evaluateTree(GPNode* root) {
 
     // Check which operator to apply
     if (root->getKey_value() == 0) // npr. "+"
-        return (float)(l_val + r_val);
+        return (float)(l_val + r_val)+1.0;
 
     if (root->getKey_value() == 1)
         return (float)(l_val - r_val);
 
     if (root->getKey_value() == 2)
-        return (float)l_val * (float)r_val;
+    {
+        return ((float)l_val+1)*((float)r_val+1);
+    }
 
     // baci jednu provjeru za nulu !
     if (root->getKey_value() == 3)
-        if ((float)r_val == 0) r_val = (float)1;
-        return (float)l_val / (float)r_val;
+    {
+        if ((float)r_val == -1) r_val = (float)1;
+        return ((float)l_val + 1) / ((float)r_val + 1);
+    }
+        /*if ((float)r_val == 0) r_val = (float)1;
+        return (float)l_val / (float)r_val;*/
     
     if (root->getKey_value() == 4)
         return (float)(std::min((float)l_val, (float)r_val));

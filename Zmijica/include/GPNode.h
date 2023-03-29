@@ -2,7 +2,7 @@
 class GPNode
 {
 private:
-    int key_value;
+    float key_value;
     GPNode* left;
     GPNode* right;
 
@@ -13,9 +13,9 @@ public:
 
     void setLeft(GPNode* left);
     void setRight(GPNode* right);
-    void setKey_value(int key_value);
+    void setKey_value(float key_value);
     GPNode* getLeft();
     GPNode* getRight();
-    int getKey_value();
+    float getKey_value();
 
 };

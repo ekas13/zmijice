@@ -130,6 +130,7 @@ bool TeamSimulator::step()
         std::shared_ptr<SnakeBase> base = liveSnakes[i];
         int snakeIndex = currentSnake->getIndex() + 2; // indeks zmije za prikaz na mapi
         Action result = steps[i % 2];
+       
         currentSnake->step(map); // ugl samo poveæava steps since last apple - za loop check - nemoj nigdje koristit povratnu vrijednost
         std::list<Point2d> snakeCells = currentSnake->getSnakeCells();
         Point2d snakeHead = snakeCells.front();

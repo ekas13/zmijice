@@ -29,7 +29,7 @@ GPNode::~GPNode() {
 		delete right;
 }
 
-void GPNode::setKey_value(int key_value) {
+void GPNode::setKey_value(float key_value) {
 	this->key_value = key_value;
 }
 
@@ -47,7 +47,7 @@ GPNode* GPNode::getLeft() {
 GPNode* GPNode::getRight() {
 	return this->right;
 }
-int GPNode::getKey_value() {
+float GPNode::getKey_value() {
 	return this->key_value;
 }
 
