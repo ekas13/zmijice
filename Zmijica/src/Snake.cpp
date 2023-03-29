@@ -8,7 +8,7 @@ Snake::Snake(Point2d headPosition, int index) :SnakeAIBase(headPosition, index) 
 
 Action Snake::step(std::vector<std::vector<int>> map)
 {
-	return STRAIGHT;
+	return SnakeAIBase::step(map);
 }
 
 //void Snake::addScore()

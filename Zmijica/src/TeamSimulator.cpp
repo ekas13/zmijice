@@ -80,7 +80,7 @@ bool TeamSimulator::step()
         fw_x = bw_x = apple_x;
         fw_y = bw_y = apple_y;
         while (this->map[apple_x][apple_y] != 0 && counter != mapSize * mapSize) {
-            if (bw_y - 1 < 0) {                         //skoci na kraj proslog reda
+            if (bw_y - 1 < 0) {                         //skoèi na kraj proslog reda
                 --bw_x;
                 bw_y = mapSize;
             }
@@ -130,6 +130,7 @@ bool TeamSimulator::step()
         std::shared_ptr<SnakeBase> base = liveSnakes[i];
         int snakeIndex = currentSnake->getIndex() + 2; // indeks zmije za prikaz na mapi
         Action result = steps[i % 2];
+        currentSnake->step(map); // ugl samo poveæava steps since last apple - za loop check - nemoj nigdje koristit povratnu vrijednost
         std::list<Point2d> snakeCells = currentSnake->getSnakeCells();
         Point2d snakeHead = snakeCells.front();
         Point2d nextHeadPosition = Point2d();
@@ -137,7 +138,7 @@ bool TeamSimulator::step()
         auto iterator = snakeCells.begin();
         std::advance(iterator, 1);
         Point2d secondCell = *iterator;
-        // ovisno o trenutnom polo¾aju zmijine glave i æeliji prije glave, postavi iduæu poziciju glave
+        // ovisno o trenutnom polo¾aju zmijine glave i èeliji prije glave, postavi iduþu poziciju glave
         switch (result)
         {
         case(Action::LEFT):
@@ -191,12 +192,14 @@ bool TeamSimulator::step()
         int hx = nextHeadPosition.getX();
         int hy = nextHeadPosition.getY();
         int atHead;
+      
         if (!(0 <= hx && hx < mapSize) || !(hy >= 0 && hy < mapSize))
             atHead = -1;
         else
             atHead = map[hx][hy];
 
-        if (this->steps > 800) {
+        Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
+        if (aiBase->getStepsSinceLastApple()>400) {
             atHead = -1;
         }
 
@@ -213,8 +216,8 @@ bool TeamSimulator::step()
         }
         case(1):        //jabuka
 
-            currentSnake->addScore(); // ne treba 
-            teams[(i / 2)]->addTeamScore();
+            currentSnake->addScore(); 
+            teams[(i/2)]->addToTeamScore(1);
             this->hasApple = false;
             this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;
             currentSnake->pushFront(nextHeadPosition);
@@ -222,9 +225,9 @@ bool TeamSimulator::step()
         default:        //ili zid ili druga zmija
             if ((atHead >= 2 && atHead <= 5) && atHead != currentSnake->getIndex())   // ako je index neke zmije, a to nije njezin (nije se zabila sama u sebe)
             {
-                teams[i / 2]->setTeamScore(teams[i / 2]->getTeamScore() - (int)(0.3 * currentSnake->getScore()));
+               // teams[i / 2]->setTeamScore(teams[i / 2]->getTeamScore() - (int)(0.3 * currentSnake->getScore()));
                 // ili samo kad izracunavam getScore napravit to po njegovim snakes-ima - to mi se cak vise svida "vise multi-agent"
-                currentSnake->setScore((int)(0.7 * currentSnake->getScore()));
+                //currentSnake->setScore((int)(0.7 * currentSnake->getScore()));
 
 
             }

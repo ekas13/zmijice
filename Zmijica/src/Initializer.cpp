@@ -41,11 +41,14 @@ void Initializer::initializeCooperativePlay()
     unsigned int stepSpeed = 1;
     TeamGenerationManager manager;
     TeamSimulator* firstLive = nullptr;
+    int step_cnt = 0;
     while (true)
     {      
         firstLive = manager.step();
+        //printf("\ngen step cnt: %d", ++step_cnt);
         if (!firstLive) {
             manager.nextGeneration();
+            step_cnt = 0;
         }  
     }
 }

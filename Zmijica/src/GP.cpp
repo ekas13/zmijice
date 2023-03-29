@@ -262,10 +262,10 @@ float GP::evaluateTree(GPNode* root) {
         return (float)l_val / (float)r_val;
     
     if (root->getKey_value() == 4)
-        return std::min((float)l_val, (float)r_val);
+        return (float)(std::min((float)l_val, (float)r_val));
 
     if (root->getKey_value() == 5)
-        return std::max((float)l_val, (float)r_val);
+        return (float)(std::max((float)l_val, (float)r_val));
 }
 
 int GP::getMaxDepth() {

@@ -41,17 +41,35 @@ std::vector<Action> Team::step(std::vector<std::vector<int>> map)
 
 std::vector<Action> Team::mapToActions(float output)
 {
+    /*if (output < -15)
+        return std::vector<Action>{LEFT, LEFT};
+    else if (-15 <= output < -10)
+        return std::vector<Action>{ LEFT, RIGHT };
+    else if (-10 <= output < -5)
+        return { RIGHT,LEFT };
+    else if (-5 <= output < -1)
+        return std::vector<Action>{ RIGHT, STRAIGHT };
+    else if (-1 <= output < 0)
+        return std::vector<Action>{ STRAIGHT, RIGHT };
+    else if (0 <= output < 1)
+        return std::vector<Action>{ STRAIGHT, LEFT};
+    else if (1 <= output < 5)
+        return std::vector<Action>{ LEFT, STRAIGHT};
+    else if (5 <= output < 10)
+        return std::vector<Action>{ RIGHT, RIGHT };
+    else if (10 <= output)
+        return std::vector<Action>{ STRAIGHT, STRAIGHT};*/
     float outputBound = 0.5;
     if (output < -1.75)
         return std::vector<Action>{LEFT, LEFT};
     else if (-1.75 < output < -1.25)
-        return std::vector<Action>{ LEFT, RIGHT };
+        return std::vector<Action>{ STRAIGHT, RIGHT };
     else if (-1.25 < output < -0.75)
         return { RIGHT,LEFT };
     else if (-0.75 < output < -0.25)
         return std::vector<Action>{ RIGHT, STRAIGHT };
     else if (-0.25 < output < 0.25)
-        return std::vector<Action>{ STRAIGHT, RIGHT };
+        return std::vector<Action>{ LEFT, RIGHT };
     else if (0.25 < output < 0.75)
         return std::vector<Action>{ STRAIGHT, LEFT};
     else if (0.75 < output < 1.25)
@@ -73,10 +91,9 @@ void Team::mutate(float chanceOfMutation)
     this->model->mutate(chanceOfMutation);
 }
 
-void Team::addTeamScore()
+void Team::addToTeamScore(int value)
 {
-    int a = this->teamScore;
-    this->teamScore++;
+    this->teamScore += value;
 }
 
 int Team::getNoOfAliveSnakes()

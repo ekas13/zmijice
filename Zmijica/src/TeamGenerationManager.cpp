@@ -8,16 +8,18 @@
 std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
 {
     std::vector<Team*> teams;
+    float average = 0;
 
     for (TeamSimulator s : allSimulators)
     {
         for (std::shared_ptr<Team> t : s.getTeams())
         {
             teams.push_back((Team*)t.get());
+            average += t->getTeamScore();
         }
 
     }
-
+    printf("\nAverage: %f", average / (float)(Config::populationSize*this->teamNumber));
     //adjustTeamScores(teams);
 
     std::sort(teams.begin(), teams.end(), [](Team* t1, Team* t2) {

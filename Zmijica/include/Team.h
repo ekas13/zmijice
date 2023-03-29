@@ -27,7 +27,7 @@ public:
 	void setTeamScore(int score);
 	int getNoOfAliveSnakes();
 	void addSnake(std::shared_ptr<SnakeBase> snake);
-	void addTeamScore();
+	void addToTeamScore(int value);
 	void removeSnakeAt(int index);
 	void addDeadSnake(std::shared_ptr<SnakeBase> snake);
 	std::vector<std::shared_ptr<SnakeBase>>& getLiveSnakes();
