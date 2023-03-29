@@ -33,7 +33,7 @@ std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
 }
 void TeamGenerationManager::printBest10teams(std::vector<Team*> teams)
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++) //teams.size()
     {
         printf("\n%d. team with a team score of: %d", i + 1, teams.at(i)->getTeamScore());
         printf("\n and number of snakes alive: %d", teams.at(i)->getNoOfAliveSnakes());
@@ -141,7 +141,7 @@ void TeamGenerationManager::nextGeneration()
         {
             simTeams.push_back(newTeams.at(i * teamNumber + j));
         }
-        TeamSimulator sim(Config::mapSize, simTeams);
+        TeamSimulator sim(Config::mapSize, simTeams,genNumber);
         newSims.push_back(sim);
 
     }
@@ -169,7 +169,7 @@ TeamGenerationManager::TeamGenerationManager()
         {
             simTeams.push_back(new Team());
         }
-        TeamSimulator sim(Config::mapSize, simTeams);
+        TeamSimulator sim(Config::mapSize, simTeams,genNumber);
         allSimulators.push_back(sim);
     }
 }

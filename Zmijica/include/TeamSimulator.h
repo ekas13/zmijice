@@ -16,9 +16,10 @@ private:
 	bool hasApple;
 	unsigned int mapSize;
 	int steps;
+	int generation;
 
 public:
-	TeamSimulator(unsigned int mapSize, std::vector<Team*> teams);
+	TeamSimulator(unsigned int mapSize, std::vector<Team*> teams,int generation);
 	/// <returns>Map size in number of cells per row/column</returns>
 	unsigned int getMapSize();
 
