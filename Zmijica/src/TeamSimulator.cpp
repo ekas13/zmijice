@@ -201,7 +201,7 @@ bool TeamSimulator::step()
 
         Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
         if (aiBase->getStepsSinceLastApple()>400) {
-            atHead = -1;
+            //atHead = -1;
         }
 
         switch (atHead)
@@ -249,6 +249,11 @@ bool TeamSimulator::step()
     for (int i = 0; i < tempDeadSnakes.size(); i++)
     {
         liveSnakes.erase(liveSnakes.begin() + tempDeadSnakes[i]);   // brisanje zmija iz ¾ivih
+    }
+    
+    if (this->steps > 800) {
+        
+        return false;
     }
     return liveSnakes.size() != 0;
 }
