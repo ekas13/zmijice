@@ -189,6 +189,27 @@ std::vector<int> Team::allSnakeScores()
     return std::vector<int>{first,second};
 }
 
+std::vector<int> Team::allSnakeSteps()
+{
+    std::vector<std::shared_ptr<SnakeBase>> allSnakes;
+    int b = allSnakes.size();
+    int al = this->snakes.size();
+    int bl = this->deadSnakes.size();
+    int alive = this->getLiveSnakes().size();
+    int dead = this->getDeadSnakes().size();
+
+    for (std::shared_ptr<SnakeBase> sn : this->getLiveSnakes()) {
+        allSnakes.push_back(sn);
+    }
+    for (std::shared_ptr<SnakeBase> sn : this->getDeadSnakes()) {
+        allSnakes.push_back(sn);
+    }
+    int a = allSnakes.size();
+    int first = dynamic_cast<Snake*>(allSnakes[0].get())->getSteps();
+    int second = dynamic_cast<Snake*>(allSnakes[1].get())->getSteps();
+    return std::vector<int>{first, second};
+}
+
 int Team::getFirstSnakeScore()
 {
     return this->allSnakeScores()[0];

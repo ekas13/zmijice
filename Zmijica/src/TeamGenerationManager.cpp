@@ -40,6 +40,9 @@ void TeamGenerationManager::printBest10teams(std::vector<Team*> teams)
         printf("\nindividual snake score -> ");
         std::vector<int> scores = teams.at(i)->allSnakeScores();
         printf("Snake 1: %d    Snake 2: %d", scores[0], scores[1]);
+        printf("\nindividual snake step -> ");
+        std::vector<int> stepCnts = teams.at(i)->allSnakeSteps();
+        printf("Snake 1: %d    Snake 2: %d", stepCnts[0], stepCnts[1]);
         //printf("Snake 1: %d    Snake 2: %d",7, scores[1]);
 
     }

@@ -205,7 +205,7 @@ bool TeamSimulator::step()
             atHead = map[hx][hy];
 
         Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
-        if (aiBase->getStepsSinceLastApple()>200) {
+        if (aiBase->getStepsSinceLastApple()>399) {
             atHead = -3;   //- nema smisla mozda imat u kooperativnom jer ne znm jel loop ili izbjegava drugu zmiju pa vrluda
         }
 
@@ -245,7 +245,7 @@ bool TeamSimulator::step()
 
             }
             if (atHead != -3) {
-                teams[(i / 2)]->addToTeamScore(this->steps / 2);
+                teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
             }
             tempDeadSnakes.push_back(i);
             this->teams[i / 2]->addDeadSnake(base);

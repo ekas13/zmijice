@@ -4,10 +4,12 @@
 Snake::Snake(Point2d headPosition, int index) :SnakeAIBase(headPosition, index) {
 
 	this->score = 0;
+	this->stepCnt = 0;
 }
 
 Action Snake::step(std::vector<std::vector<int>> map)
 {
+	this->stepCnt++;
 	return SnakeAIBase::step(map);
 }
 
@@ -15,7 +17,10 @@ Action Snake::step(std::vector<std::vector<int>> map)
 //{
 //	this->score++;
 //}
-
+int Snake::getSteps()
+{
+	return this->stepCnt;
+}
 Snake::~Snake()
 {
 	//free;

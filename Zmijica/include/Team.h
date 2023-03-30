@@ -37,4 +37,5 @@ public:
 	int getFirstSnakeScore();
 	int getSecondSnakeScore();
 	std::vector<int> allSnakeScores();
+	std::vector<int> allSnakeSteps();
 };
