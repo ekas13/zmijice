@@ -12,6 +12,7 @@ TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams,
     this->steps = 0;
     this->map.resize(mapSize, std::vector<int>(mapSize));
     this->hasApple = false; //na pocetku nema jabuke
+    this->appleNo = 2;
     this->generation = generation;
     Point2d snakeStartPosition = Point2d(mapSize / 2, mapSize / 2);
 
@@ -72,7 +73,7 @@ bool TeamSimulator::step()
 {
     this->steps++;
     //generiranje random pozicije jabuke
-    if (!this->hasApple) {
+    if (this->hasApple <2) {
         int apple_x, apple_y;
         apple_x = Random::generateInt(0, mapSize - 1);
         apple_y = Random::generateInt(0, mapSize - 1);
@@ -112,6 +113,7 @@ bool TeamSimulator::step()
         if (this->map[apple_x][apple_y] == 0) {
             this->map[apple_x][apple_y] = 1;    //pozicija jabuke
             this->hasApple = true;
+            this->appleNo++;
         }
     }
     std::vector<int> tempDeadSnakes;
@@ -205,7 +207,7 @@ bool TeamSimulator::step()
             atHead = map[hx][hy];
 
         Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
-        if (aiBase->getStepsSinceLastApple()>399) {
+        if (aiBase->getStepsSinceLastApple()>100) {
             atHead = -3;   //- nema smisla mozda imat u kooperativnom jer ne znm jel loop ili izbjegava drugu zmiju pa vrluda
         }
 
@@ -223,15 +225,16 @@ bool TeamSimulator::step()
         case(1):        //jabuka
 
             // fitness funkcija 
-            int reward;
+            /*int reward;
             if (liveSnakes.size() > 1 && this->teams[0]->getLiveSnakes()[std::abs(i - 1)]->getScore() > currentSnake->getScore())
                 reward = 10;
             else
                 reward = 3;
-            teams[(i / 2)]->addToTeamScore(reward);
+            teams[(i / 2)]->addToTeamScore(reward);*/
             currentSnake->addScore();
 
             this->hasApple = false;
+            this->appleNo--;
             this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;
             currentSnake->pushFront(nextHeadPosition);
             break;
@@ -245,7 +248,7 @@ bool TeamSimulator::step()
 
             }
             if (atHead != -3) {
-                teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
+                //teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
             }
             tempDeadSnakes.push_back(i);
             this->teams[i / 2]->addDeadSnake(base);

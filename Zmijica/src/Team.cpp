@@ -145,7 +145,24 @@ int Team::getNoOfAliveSnakes()
 
 int Team::getTeamScore()
 {
-    return this->teamScore;
+    //return this->teamScore;
+    std::vector<int> scores = allSnakeScores();
+    std::vector<int> steps = allSnakeSteps();
+    float deltaScores = (float)(std::abs(scores[0] - scores[1]));
+    float deltaSteps = (float)(std::abs(steps[0] - steps[1]));
+    if (deltaScores == 0) deltaScores = 1;
+    if (deltaSteps == 0) deltaSteps = 1;
+    int reward = 0;
+    if (steps[0] != 101 && steps[1] != 101) {
+        if (scores[0] != 4 && scores[1] != 4) {
+            reward += 500 * (1 - deltaScores / 200);
+        }
+        reward += 300*(1- deltaSteps/200) + (steps[0] + steps[1]);
+        reward += 30*(scores[0] + scores[1]);
+    }
+    
+    return reward;
+
 }
 
 void Team::setTeamScore(int score)

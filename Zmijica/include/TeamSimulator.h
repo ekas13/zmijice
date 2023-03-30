@@ -15,6 +15,7 @@ private:
 	std::vector<std::shared_ptr<SnakeBase>> liveSnakes;
 	bool hasApple;
 	unsigned int mapSize;
+	int appleNo;
 	int steps;
 	int generation;
 
