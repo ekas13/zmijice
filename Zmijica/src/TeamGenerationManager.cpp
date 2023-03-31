@@ -161,7 +161,7 @@ TeamGenerationManager::TeamGenerationManager()
     genNumber = 1;
     this->teamNumber = 0;
     if (Config::learningType == "MARL_cooperative")
-        this->teamNumber = 1;
+        this->teamNumber = 2;
     else if (Config::learningType == "MARL_mixed")
         this->teamNumber = 2;
 

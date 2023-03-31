@@ -12,7 +12,7 @@ TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams,
     this->steps = 0;
     this->map.resize(mapSize, std::vector<int>(mapSize));
     this->hasApple = false; //na pocetku nema jabuke
-    this->appleNo = 2;
+    this->appleNo = 2*2;
     this->generation = generation;
     Point2d snakeStartPosition = Point2d(mapSize / 2, mapSize / 2);
 
@@ -73,7 +73,7 @@ bool TeamSimulator::step()
 {
     this->steps++;
     //generiranje random pozicije jabuke
-    if (this->hasApple <2) {
+    if (this->hasApple < 4) {
         int apple_x, apple_y;
         apple_x = Random::generateInt(0, mapSize - 1);
         apple_y = Random::generateInt(0, mapSize - 1);
@@ -117,155 +117,161 @@ bool TeamSimulator::step()
         }
     }
     std::vector<int> tempDeadSnakes;
-    std::vector<Action> steps;
 
-    for (int i = 0; i < liveSnakes.size(); i++)
+    for (int t = 0; t < this->teams.size(); t++)
     {
-        int a = liveSnakes.size();
-        if (i == 0) {
-            steps = teams[0]->step(map);
-        }
-        else if (i == 2)
-            steps = teams[1]->step(map);
+        std::vector<Action> steps;
+        Team* currentTeam = &*(this->teams[t]);
 
-
-        SnakeBase* currentSnake = &*liveSnakes[i];
-        std::shared_ptr<SnakeBase> base = liveSnakes[i];
-        int snakeIndex = currentSnake->getIndex() + 2; // indeks zmije za prikaz na mapi
-        Action result = steps[i % 2];
-       
-        currentSnake->step(map); // ugl samo poveæava steps since last apple - za loop check - nemoj nigdje koristit povratnu vrijednost
-        std::list<Point2d> snakeCells = currentSnake->getSnakeCells();
-        Point2d snakeHead = snakeCells.front();
-        Point2d nextHeadPosition = Point2d();
-
-        auto iterator = snakeCells.begin();
-        std::advance(iterator, 1);
-        Point2d secondCell = *iterator;
-        // ovisno o trenutnom polo¾aju zmijine glave i èeliji prije glave, postavi iduþu poziciju glave
-        switch (result)
+        for (int i = 0; i < currentTeam->getLiveSnakes().size(); i++)
         {
-        case(Action::LEFT):
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
+            //int a = liveSnakes.size();
+            if (i == 0) {
+                steps = teams[t]->step(map);
             }
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
-            }
-            if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
-            }
-            if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
-            }
-            break;
+            
+            std::shared_ptr<SnakeBase> base = currentTeam->getLiveSnakes()[i];
+            SnakeBase* currentSnake = &*base;                                        //&*liveSnakes[i];
+            int snakeIndex = currentSnake->getIndex() + 2;                           // indeks zmije za prikaz na mapi
+            Action result = steps[i];                                                //i % 2
 
-        case(Action::RIGHT):
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
-            }
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
-            }
-            if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
-            }
-            if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
-            }
-            break;
+            currentSnake->step(map); // ugl samo poveæava steps since last apple - za loop check - nemoj nigdje koristit povratnu vrijednost
+            std::list<Point2d> snakeCells = currentSnake->getSnakeCells();
+            Point2d snakeHead = snakeCells.front();
+            Point2d nextHeadPosition = Point2d();
 
-        case(Action::STRAIGHT):
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
-            }
-            if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
-            }
-            if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
-            }
-            if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
-                nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
-            }
-            break;
-
-        default:
-            break;
-        }
-        if (this->steps > 800)
-        {
-            //teams[(i / 2)]->addToTeamScore(this->steps/2);
-        }
-        int hx = nextHeadPosition.getX();
-        int hy = nextHeadPosition.getY();
-        int atHead;
-      
-        if (!(0 <= hx && hx < mapSize) || !(hy >= 0 && hy < mapSize))
-            atHead = -1;
-        else
-            atHead = map[hx][hy];
-
-        Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
-        if (aiBase->getStepsSinceLastApple()>100) {
-            atHead = -3;   //- nema smisla mozda imat u kooperativnom jer ne znm jel loop ili izbjegava drugu zmiju pa vrluda
-        }
-
-        switch (atHead)
-        {
-        case(0):        //èisto
-        {
-            Point2d snakeTail = snakeCells.back();
-            this->map[snakeTail.getX()][snakeTail.getY()] = 0;  //oèistimo polje di je bio rep zmiji
-            this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;   //nova pozicija glave u matrici
-            currentSnake->pushFront(nextHeadPosition);
-            currentSnake->popBack();
-            break;
-        }
-        case(1):        //jabuka
-
-            // fitness funkcija 
-            /*int reward;
-            if (liveSnakes.size() > 1 && this->teams[0]->getLiveSnakes()[std::abs(i - 1)]->getScore() > currentSnake->getScore())
-                reward = 10;
-            else
-                reward = 3;
-            teams[(i / 2)]->addToTeamScore(reward);*/
-            currentSnake->addScore();
-
-            this->hasApple = false;
-            this->appleNo--;
-            this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;
-            currentSnake->pushFront(nextHeadPosition);
-            break;
-        default:        //ili zid ili druga zmija
-            if ((atHead >= 2 && atHead <= 5) && atHead != currentSnake->getIndex())   // ako je index neke zmije, a to nije njezin (nije se zabila sama u sebe)
+            auto iterator = snakeCells.begin();
+            std::advance(iterator, 1);
+            Point2d secondCell = *iterator;
+            // ovisno o trenutnom polo¾aju zmijine glave i èeliji prije glave, postavi idrugu poziciju glave
+            switch (result)
             {
-               // teams[i / 2]->setTeamScore(teams[i / 2]->getTeamScore() - (int)(0.3 * currentSnake->getScore()));
-                // ili samo kad izracunavam getScore napravit to po njegovim snakes-ima - to mi se cak vise svida "vise multi-agent"
-                //currentSnake->setScore((int)(0.7 * currentSnake->getScore()));
+            case(Action::LEFT):
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
+                }
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
+                }
+                if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
+                }
+                if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
+                }
+                break;
+
+            case(Action::RIGHT):
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
+                }
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
+                }
+                if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
+                }
+                if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
+                }
+                break;
+
+            case(Action::STRAIGHT):
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() - 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() + 1));
+                }
+                if (snakeHead.getX() == secondCell.getX() && snakeHead.getY() + 1 == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX(), snakeHead.getY() - 1));
+                }
+                if (snakeHead.getX() - 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() + 1, snakeHead.getY()));
+                }
+                if (snakeHead.getX() + 1 == secondCell.getX() && snakeHead.getY() == secondCell.getY()) {
+                    nextHeadPosition.setLocation(Point2d(snakeHead.getX() - 1, snakeHead.getY()));
+                }
+                break;
+
+            default:
+                break;
+            }
+            if (this->steps > 800)
+            {
+                //teams[(i / 2)]->addToTeamScore(this->steps/2);
+            }
+            int hx = nextHeadPosition.getX();
+            int hy = nextHeadPosition.getY();
+            int atHead;
+
+            if (!(0 <= hx && hx < mapSize) || !(hy >= 0 && hy < mapSize))
+                atHead = -1;
+            else
+                atHead = map[hx][hy];
+
+            Snake* aiBase = dynamic_cast<Snake*>(currentSnake);
+            if (aiBase->getStepsSinceLastApple() > 100) {
+                atHead = -3;   //- nema smisla mozda imat u kooperativnom jer ne znm jel loop ili izbjegava drugu zmiju pa vrluda
+            }
+
+            switch (atHead)
+            {
+            case(0):        //èisto
+            {
+                Point2d snakeTail = snakeCells.back();
+                this->map[snakeTail.getX()][snakeTail.getY()] = 0;  //oèistimo polje di je bio rep zmiji
+                this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;   //nova pozicija glave u matrici
+                currentSnake->pushFront(nextHeadPosition);
+                currentSnake->popBack();
+                break;
+            }
+            case(1):        //jabuka
+
+                // fitness funkcija 
+                /*int reward;
+                if (liveSnakes.size() > 1 && this->teams[0]->getLiveSnakes()[std::abs(i - 1)]->getScore() > currentSnake->getScore())
+                    reward = 10;
+                else
+                    reward = 3;
+                teams[(i / 2)]->addToTeamScore(reward);*/
+                currentSnake->addScore();
+
+                this->hasApple = false;
+                this->appleNo--;
+                this->map[nextHeadPosition.getX()][nextHeadPosition.getY()] = snakeIndex;
+                currentSnake->pushFront(nextHeadPosition);
+                break;
+            default:        //ili zid ili druga zmija
+                if ((atHead >= 2 && atHead <= 5) && atHead != currentSnake->getIndex())   // ako je index neke zmije, a to nije njezin (nije se zabila sama u sebe)
+                {
+                    // teams[i / 2]->setTeamScore(teams[i / 2]->getTeamScore() - (int)(0.3 * currentSnake->getScore()));
+                     // ili samo kad izracunavam getScore napravit to po njegovim snakes-ima - to mi se cak vise svida "vise multi-agent"
+                     //currentSnake->setScore((int)(0.7 * currentSnake->getScore()));
 
 
-            }
-            if (atHead != -3) {
-                //teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
-            }
-            tempDeadSnakes.push_back(i);
-            this->teams[i / 2]->addDeadSnake(base);
-            this->teams[i / 2]->removeSnakeAt(i);
-            //deadSnakes.push_back(currentSnake);
-            for (int x = 0; x < mapSize; x++) {     //brisanje nedavno preminule zmije s mape
-                for (int y = 0; y < mapSize; y++) {
-                    if (this->map[x][y] == snakeIndex) this->map[x][y] = 0;
+                }
+                if (atHead != -3) {
+                    //teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
+                }
+                /*if (t == 0)
+                    tempDeadSnakes.push_back(i);
+                else if (t == 1)
+                    tempDeadSnakes.push_back(liveSnakes.size()-1-i);*/
+
+                currentTeam->addDeadSnake(base);                                           //this->teams[i / 2]
+                currentTeam->removeSnakeAt(i);
+                //deadSnakes.push_back(currentSnake);
+                for (int x = 0; x < mapSize; x++) {     //brisanje nedavno preminule zmije s mape
+                    for (int y = 0; y < mapSize; y++) {
+                        if (this->map[x][y] == snakeIndex) this->map[x][y] = 0;
+                    };
                 };
-            };
-            break;
+                break;
+            }
         }
-    }
-    std::sort(tempDeadSnakes.rbegin(), tempDeadSnakes.rend());
-    for (int i = 0; i < tempDeadSnakes.size(); i++)
-    {
-        liveSnakes.erase(liveSnakes.begin() + tempDeadSnakes[i]);   // brisanje zmija iz ¾ivih
+        std::sort(tempDeadSnakes.rbegin(), tempDeadSnakes.rend());
+        for (int i = 0; i < tempDeadSnakes.size(); i++)
+        {
+            liveSnakes.erase(liveSnakes.begin() + tempDeadSnakes[i]);   // brisanje zmija iz ¾ivih
+        }
     }
     
     if (this->steps > 800) {
