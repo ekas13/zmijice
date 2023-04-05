@@ -78,7 +78,6 @@ void Graphics::drawSnakes()
 
 bool Graphics::drawScore()
 {
-	printf("\n%d", simulator->getLiveSnakes().size());
 	std::vector<std::shared_ptr<SnakeBase>> liveSnakes = simulator->getLiveSnakes();
 	std::vector<std::shared_ptr<SnakeBase>> deadSnakes = simulator->getDeadSnakes();
 	std::vector<std::shared_ptr<SnakeBase>> allSnakes = liveSnakes;

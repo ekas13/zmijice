@@ -208,11 +208,6 @@ void GenerationManager::nextGeneration()
     }
     genNumber++;
 
-    for (int i = 0; i < allSimulators.size(); i++)
-    {
-        printf("\n%d %d %d", i, allSimulators[i]->getLiveSnakes()[0]->getScore(), allSimulators[i]->getLiveSnakes()[0]->getScore());
-    }
-
 }
 
 unsigned int* GenerationManager::getGenerationNumber()
