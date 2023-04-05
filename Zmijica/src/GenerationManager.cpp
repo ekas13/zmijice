@@ -143,33 +143,26 @@ GenerationManager::GenerationManager()
 {
     genNumber = 1;
     this->challengeSnake = std::shared_ptr<SnakeBase>(new SnakeHamilton(Point2d(), 0, Config::mapSize));
-    //this->challengeSnake = new SnakeHamilton(Point2d(), 0, Config::mapSize);
     for (int i = 0; i < Config::populationSize; i++)
     {
-        std::vector<SnakeBase*> simSnakes(2);
-        //simSnakes.reserve(Config::snakesPerSim + 1);
-        //SnakeBase* snake = this->challengeSnake;
-        //simSnakes.push_back(snake);
-        //simSnakes.push_back(new SnakeHamilton(Point2d(), 0, Config::mapSize));
-        simSnakes[0] = this->challengeSnake.get(); //nije radilo - opet garbage value - nekad negdje izaðe iz scopea?
+        std::vector<std::shared_ptr<SnakeBase>> simSnakes(2);
+        simSnakes[0] = this->challengeSnake; 
 
         for (int j = 0; j < Config::snakesPerSim; j++)
         {
 
             if (Config::AIModel == "NN")
-                simSnakes[1] = new SnakeAINN(Point2d(), NULL, Config::hiddenLayerDepth, Config::hiddenLayerWidth, Config::activationFunction);
+                simSnakes[1] = std::shared_ptr<SnakeBase>(new SnakeAINN(Point2d(), NULL, Config::hiddenLayerDepth, Config::hiddenLayerWidth, Config::activationFunction));
             else if (Config::AIModel == "CGP")
-                simSnakes[1] = new SnakeAICGP(Point2d(), NULL, Config::numOfRows, Config::numOfCols, Config::numOfFunctions, Config::numOfFunctionArgs);
+                simSnakes[1] = std::shared_ptr<SnakeBase>(new SnakeAICGP(Point2d(), NULL, Config::numOfRows, Config::numOfCols, Config::numOfFunctions, Config::numOfFunctionArgs));
             else if (Config::AIModel == "GP")
-                simSnakes[1] = new SnakeAIGP(Point2d(), NULL, Config::maxDepth, Config::numOfFunctions);
+                simSnakes[1] = std::shared_ptr<SnakeBase>(new SnakeAIGP(Point2d(), NULL, Config::maxDepth, Config::numOfFunctions));
 
         }
 
         std::shared_ptr<Simulator> sim = std::shared_ptr<Simulator>(new Simulator(Config::mapSize, simSnakes));
         
         allSimulators.push_back(sim);
-        //for (SnakeBase* s : simSnakes)
-        //    delete s;
     }
 }
 
@@ -202,12 +195,12 @@ void GenerationManager::nextGeneration()
 
     for (int i = 0; i < Config::populationSize; i++)
     {
-        std::vector<SnakeBase*> simSnakes(2);
-        simSnakes[0] = this->challengeSnake.get();
+        std::vector<std::shared_ptr<SnakeBase>> simSnakes(2);
+        simSnakes[0] = this->challengeSnake;
 
         for (int j = 0; j < Config::snakesPerSim; j++)
         {
-            simSnakes[1] = newSnakes.at(i * Config::snakesPerSim + j);
+            simSnakes[1] = std::shared_ptr<SnakeBase>(newSnakes.at(i * Config::snakesPerSim + j));
         }
 
         std::shared_ptr<Simulator> sim = std::shared_ptr<Simulator>(new Simulator(Config::mapSize, simSnakes));

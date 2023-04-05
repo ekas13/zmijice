@@ -18,7 +18,7 @@ private:
 
 public:
 	std::shared_ptr<SnakeBase> challengeSnake;
-	Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes = std::vector<SnakeBase*>());
+	Simulator(unsigned int mapSize, std::vector<std::shared_ptr<SnakeBase>> snakes = std::vector<std::shared_ptr<SnakeBase>>());
 	/// <returns>Map size in number of cells per row/column</returns>
 	unsigned int getMapSize();
 

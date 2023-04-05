@@ -52,7 +52,7 @@ void Simulator::addSnake(std::string type, Point2d startPosition)
     }
 }
 
-Simulator::Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes)
+Simulator::Simulator(unsigned int mapSize, std::vector<std::shared_ptr<SnakeBase>> snakes)
 {
     this->mapSize = mapSize;
 
@@ -94,15 +94,15 @@ Simulator::Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes)
         for (int i = 0; i < snakes.size(); i++)
         {
             std::shared_ptr<SnakeBase> snake;
-            SnakeAINN* nnSnake = dynamic_cast<SnakeAINN*>(snakes.at(i));
+            SnakeAINN* nnSnake = dynamic_cast<SnakeAINN*>(snakes.at(i).get());
             if (nnSnake)
                 snake = std::shared_ptr<SnakeBase>(new SnakeAINN(snakeStartPosition, liveSnakes.size(), *nnSnake));
 
-            SnakeAICGP* cgpSnake = dynamic_cast<SnakeAICGP*>(snakes.at(i));
+            SnakeAICGP* cgpSnake = dynamic_cast<SnakeAICGP*>(snakes.at(i).get());
             if (cgpSnake)
                 snake = std::shared_ptr<SnakeBase>(new SnakeAICGP(snakeStartPosition, liveSnakes.size(), *cgpSnake));
 
-            SnakeAIGP* gpSnake = dynamic_cast<SnakeAIGP*>(snakes.at(i));
+            SnakeAIGP* gpSnake = dynamic_cast<SnakeAIGP*>(snakes.at(i).get());
             if (gpSnake)
                 snake = std::shared_ptr<SnakeBase>(new SnakeAIGP(snakeStartPosition, liveSnakes.size(), *gpSnake));
 
@@ -308,15 +308,15 @@ bool Simulator::step()
             break;
         }
     }
-    if (liveSnakes.size() == 1)
-    {
-        if (liveSnakes[0] == this->challengeSnake)
-            tempDeadSnakes.push_back(0);
-    }
     std::sort(tempDeadSnakes.rbegin(), tempDeadSnakes.rend());
     for (int i = 0; i < tempDeadSnakes.size(); i++)
     {
         liveSnakes.erase(liveSnakes.begin() + tempDeadSnakes[i]);   // brisanje zmija iz živih
+    }
+    if (liveSnakes.size() == 1)
+    {
+        if (liveSnakes[0] == this->challengeSnake)
+            liveSnakes.erase(liveSnakes.begin() + 0);
     }
 
     return liveSnakes.size() != 0;
