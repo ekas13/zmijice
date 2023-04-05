@@ -11,17 +11,29 @@
 std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
 {
     std::vector<SnakeAIBase*> allSnakes;
+    std::shared_ptr<SnakeBase> tempSnakeChallenge;
+    int maxTempSnakeChallenge = 0;
 
     for (std::shared_ptr<Simulator> s : allSimulators)
     {
         std::vector<SnakeAIBase*> simSnakes;
+
         for (std::shared_ptr<SnakeBase> sn : s->getLiveSnakes())
         {
             simSnakes.push_back((SnakeAIBase*)sn.get());
+            if (sn->getScore() > s->challengeSnake->getScore() && sn->getScore() > maxTempSnakeChallenge) {
+                tempSnakeChallenge = sn;
+                maxTempSnakeChallenge = sn->getScore();
+            }
+
         }
         for (std::shared_ptr<SnakeBase> sn : s->getDeadSnakes())
         {
             simSnakes.push_back((SnakeAIBase*)sn.get());
+            if (sn->getScore() > s->challengeSnake->getScore() && sn->getScore() > maxTempSnakeChallenge) {
+                tempSnakeChallenge = sn;
+                maxTempSnakeChallenge = sn->getScore();
+            }
         }
 
         allSnakes.insert(allSnakes.begin(), simSnakes.begin(), simSnakes.end());
@@ -33,6 +45,10 @@ std::vector<SnakeAIBase*> GenerationManager::getAllSnakesSorted()
 
         return s1->getScore() > s2->getScore();
         });
+    if (tempSnakeChallenge)
+    {
+        this->challengeSnake = tempSnakeChallenge;
+    }
 
     return allSnakes;
 }
@@ -139,17 +155,14 @@ GenerationManager::GenerationManager()
 
         for (int j = 0; j < Config::snakesPerSim; j++)
         {
-            SnakeBase* s  = NULL;
 
             if (Config::AIModel == "NN")
-                s = new SnakeAINN(Point2d(), NULL, Config::hiddenLayerDepth, Config::hiddenLayerWidth, Config::activationFunction);
+                simSnakes[1] = new SnakeAINN(Point2d(), NULL, Config::hiddenLayerDepth, Config::hiddenLayerWidth, Config::activationFunction);
             else if (Config::AIModel == "CGP")
-                s = new SnakeAICGP(Point2d(), NULL, Config::numOfRows, Config::numOfCols, Config::numOfFunctions, Config::numOfFunctionArgs);
+                simSnakes[1] = new SnakeAICGP(Point2d(), NULL, Config::numOfRows, Config::numOfCols, Config::numOfFunctions, Config::numOfFunctionArgs);
             else if (Config::AIModel == "GP")
-                s = new SnakeAIGP(Point2d(), NULL, Config::maxDepth, Config::numOfFunctions);
+                simSnakes[1] = new SnakeAIGP(Point2d(), NULL, Config::maxDepth, Config::numOfFunctions);
 
-            simSnakes[1] = s;
-            //simSnakes.push_back(s);
         }
 
         std::shared_ptr<Simulator> sim = std::shared_ptr<Simulator>(new Simulator(Config::mapSize, simSnakes));
@@ -189,10 +202,12 @@ void GenerationManager::nextGeneration()
 
     for (int i = 0; i < Config::populationSize; i++)
     {
-        std::vector<SnakeBase*> simSnakes;
+        std::vector<SnakeBase*> simSnakes(2);
+        simSnakes[0] = this->challengeSnake.get();
+
         for (int j = 0; j < Config::snakesPerSim; j++)
         {
-            simSnakes.push_back(newSnakes.at(i * Config::snakesPerSim + j));
+            simSnakes[1] = newSnakes.at(i * Config::snakesPerSim + j);
         }
 
         std::shared_ptr<Simulator> sim = std::shared_ptr<Simulator>(new Simulator(Config::mapSize, simSnakes));
@@ -200,8 +215,11 @@ void GenerationManager::nextGeneration()
     }
     genNumber++;
 
-    for (SnakeAIBase* sn : newSnakes)
-        delete sn;
+    for (int i = 0; i < allSimulators.size(); i++)
+    {
+        printf("\n%d %d %d", i, allSimulators[i]->getLiveSnakes()[0]->getScore(), allSimulators[i]->getLiveSnakes()[0]->getScore());
+    }
+
 }
 
 unsigned int* GenerationManager::getGenerationNumber()

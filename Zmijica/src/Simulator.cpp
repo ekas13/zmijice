@@ -295,7 +295,11 @@ bool Simulator::step()
             break;
 		default:        //ili zid ili druga zmija
             tempDeadSnakes.push_back(i);
-			deadSnakes.push_back(currentSnake);
+
+            if (currentSnake != this->challengeSnake) {
+                deadSnakes.push_back(currentSnake);
+            }
+
             for (int x = 0; x < mapSize; x++){     //brisanje nedavno preminule zmije s mape
                 for (int y = 0; y < mapSize; y++){
                     if (this->map[x][y] == snakeIndex) this->map[x][y] = 0;
@@ -304,7 +308,11 @@ bool Simulator::step()
             break;
         }
     }
-
+    if (liveSnakes.size() == 1)
+    {
+        if (liveSnakes[0] == this->challengeSnake)
+            tempDeadSnakes.push_back(0);
+    }
     std::sort(tempDeadSnakes.rbegin(), tempDeadSnakes.rend());
     for (int i = 0; i < tempDeadSnakes.size(); i++)
     {
