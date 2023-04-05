@@ -8,9 +8,10 @@
 class GenerationManager
 {
 private:
-    std::vector<Simulator> allSimulators;
+    std::shared_ptr<SnakeBase> challengeSnake;
     unsigned int genNumber;
-
+    std::vector<std::shared_ptr<Simulator>> allSimulators;
+    //std::shared_ptr<SnakeBase> challengeSnake;
     std::vector<SnakeAIBase*> getAllSnakesSorted();
     std::vector<const SnakeAIBase*> cullCutoff(unsigned int count);
     std::vector<const SnakeAIBase*> cullGeometric(unsigned int count);

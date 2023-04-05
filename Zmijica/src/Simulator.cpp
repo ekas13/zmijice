@@ -93,19 +93,26 @@ Simulator::Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes)
 
         for (int i = 0; i < snakes.size(); i++)
         {
+            std::shared_ptr<SnakeBase> snake;
             SnakeAINN* nnSnake = dynamic_cast<SnakeAINN*>(snakes.at(i));
             if (nnSnake)
-                liveSnakes.push_back(std::shared_ptr<SnakeBase>(new SnakeAINN(snakeStartPosition, liveSnakes.size(), *nnSnake)));
+                snake = std::shared_ptr<SnakeBase>(new SnakeAINN(snakeStartPosition, liveSnakes.size(), *nnSnake));
 
             SnakeAICGP* cgpSnake = dynamic_cast<SnakeAICGP*>(snakes.at(i));
             if (cgpSnake)
-                liveSnakes.push_back(std::shared_ptr<SnakeBase>(new SnakeAICGP(snakeStartPosition, liveSnakes.size(), *cgpSnake)));
+                snake = std::shared_ptr<SnakeBase>(new SnakeAICGP(snakeStartPosition, liveSnakes.size(), *cgpSnake));
 
             SnakeAIGP* gpSnake = dynamic_cast<SnakeAIGP*>(snakes.at(i));
             if (gpSnake)
-                liveSnakes.push_back(std::shared_ptr<SnakeBase>(new SnakeAIGP(snakeStartPosition, liveSnakes.size(), *gpSnake)));
+                snake = std::shared_ptr<SnakeBase>(new SnakeAIGP(snakeStartPosition, liveSnakes.size(), *gpSnake));
 
-
+            if (!nnSnake && !cgpSnake && !gpSnake)
+                snake = std::shared_ptr<SnakeBase>(new SnakeHamilton(snakeStartPosition,liveSnakes.size(),Config::mapSize));
+            if (i == 0) {
+                this->challengeSnake = snake;
+            }
+            
+            liveSnakes.push_back(snake);
             snakeStartPosition.setLocation(snakeStartPosition.getX(), snakeStartPosition.getY() + Config::mapSize / snakes.size());
         }
     }
@@ -144,6 +151,7 @@ std::vector<std::shared_ptr<SnakeBase>>& Simulator::getDeadSnakes()
 
 bool Simulator::step()
 {   
+    //printf("\n%d", this->challengeSnake->getScore());
     //generiranje random pozicije jabuke
     if (!this->hasApple) {
         int apple_x, apple_y;

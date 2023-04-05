@@ -11,11 +11,13 @@ private:
 	std::vector<std::vector<int>> map;
 	std::vector<std::shared_ptr<SnakeBase>> liveSnakes;
 	std::vector<std::shared_ptr<SnakeBase>> deadSnakes;
+	
 	bool hasApple;
 	unsigned int mapSize;
 	void addSnake(std::string type, Point2d startPosition);
 
 public:
+	std::shared_ptr<SnakeBase> challengeSnake;
 	Simulator(unsigned int mapSize, std::vector<SnakeBase*> snakes = std::vector<SnakeBase*>());
 	/// <returns>Map size in number of cells per row/column</returns>
 	unsigned int getMapSize();
