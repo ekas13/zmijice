@@ -20,7 +20,10 @@ private:
 	int generation;
 
 public:
-	TeamSimulator(unsigned int mapSize, std::vector<Team*> teams,int generation);
+
+	std::shared_ptr<Team> challengeTeam;
+
+	TeamSimulator(unsigned int mapSize, std::vector<std::shared_ptr<Team>> teams,int generation);
 	/// <returns>Map size in number of cells per row/column</returns>
 	unsigned int getMapSize();
 

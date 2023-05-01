@@ -8,14 +8,20 @@
 std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
 {
     std::vector<Team*> teams;
+    std::shared_ptr<Team> tempTeamChallenge;
+    float maxTempTeamChallenge = 0;
     float average = 0;
 
-    for (TeamSimulator s : allSimulators)
+    for (std::shared_ptr <TeamSimulator> s : allSimulators)
     {
-        for (std::shared_ptr<Team> t : s.getTeams())
+        for (std::shared_ptr<Team> t : s->getTeams())
         {
             teams.push_back((Team*)t.get());
             average += t->getTeamScore();
+            if (t->getTeamScore() > challengeTeam->getTeamScore() && t->getTeamScore() > maxTempTeamChallenge) {
+                tempTeamChallenge = t;
+                maxTempTeamChallenge = t->getTeamScore();
+            }
         }
 
     }
@@ -28,6 +34,11 @@ std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
         });
 
     printBest10teams(teams);
+
+    if (tempTeamChallenge) {
+        printf("NEW CHALLENGE TEAM! - old team score (%d) beat by new team score (%d)", this->challengeTeam->getTeamScore(), tempTeamChallenge->getTeamScore());
+        this->challengeTeam = tempTeamChallenge;
+    }
 
     return teams;
 }
@@ -135,21 +146,21 @@ void TeamGenerationManager::nextGeneration()
     for (int i = 0; i < newTeams.size(); i++)
         newTeams.at(i)->mutate(Config::mutationChance);
 
-    std::vector<TeamSimulator> newSims;
+    //std::vector<TeamSimulator> newSims;
+    allSimulators.clear();
 
     for (int i = 0; i < Config::populationSize; i++)
     {
-        std::vector<Team*> simTeams;
-        for (int j = 0; j < teamNumber; j++)
+        std::vector<std::shared_ptr<Team>> simTeams(2);
+        simTeams[0] = this->challengeTeam;
+        for (int j = 0; j < teamNumber-1; j++)
         {
-            simTeams.push_back(newTeams.at(i * teamNumber + j));
+            simTeams[1] = std::shared_ptr<Team>(newTeams.at(i * teamNumber + j));
         }
-        TeamSimulator sim(Config::mapSize, simTeams,genNumber);
-        newSims.push_back(sim);
+        std::shared_ptr <TeamSimulator> sim = std::shared_ptr <TeamSimulator>(new TeamSimulator(Config::mapSize, simTeams,genNumber));
+        allSimulators.push_back(sim);
 
     }
-
-    allSimulators = newSims;
     genNumber++;
 
     for (Team* sn : newTeams)
@@ -159,20 +170,24 @@ void TeamGenerationManager::nextGeneration()
 TeamGenerationManager::TeamGenerationManager()
 {
     genNumber = 1;
+    this->challengeTeam = std::shared_ptr<Team>(new Team());
+
     this->teamNumber = 0;
     if (Config::learningType == "MARL_cooperative")
-        this->teamNumber = 1;
+        this->teamNumber = 2; //1;
     else if (Config::learningType == "MARL_mixed")
         this->teamNumber = 2;
 
     for (int i = 0; i < Config::populationSize; i++)
     {
-        std::vector<Team*> simTeams;
-        for (int j = 0; j < teamNumber; j++)
+        std::vector<std::shared_ptr<Team>> simTeams(2);
+        simTeams[0] = this->challengeTeam;
+
+        for (int j = 0; j < teamNumber-1; j++)
         {
-            simTeams.push_back(new Team());
+            simTeams[1] = std::shared_ptr<Team>(new Team());
         }
-        TeamSimulator sim(Config::mapSize, simTeams,genNumber);
+        std::shared_ptr <TeamSimulator> sim = std::shared_ptr <TeamSimulator>(new TeamSimulator(Config::mapSize, simTeams, genNumber));
         allSimulators.push_back(sim);
     }
 }
@@ -182,8 +197,8 @@ TeamSimulator* TeamGenerationManager::step()
     TeamSimulator* firstWithSnake = nullptr;
     for (int i = 0; i < allSimulators.size(); i++)
     {
-        if (allSimulators.at(i).step() && !firstWithSnake) {
-            firstWithSnake = &allSimulators.at(i); // treba se jo¹ vrtit - generation manager ga vrti sve dok zadnji sim ne umre (sve dok ima bar jedna ¾iva zmija) - zato step vraæa ima li ¾ivih zmija ili ne
+        if (allSimulators.at(i)->step() && !firstWithSnake) {
+            firstWithSnake = allSimulators.at(i).get(); // treba se jo¹ vrtit - generation manager ga vrti sve dok zadnji sim ne umre (sve dok ima bar jedna ¾iva zmija) - zato step vraæa ima li ¾ivih zmija ili ne
         }
     }
     return firstWithSnake;

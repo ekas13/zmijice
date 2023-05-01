@@ -8,7 +8,8 @@
 class TeamGenerationManager
 {
 private:
-    std::vector<TeamSimulator> allSimulators;
+    std::shared_ptr<Team> challengeTeam;
+    std::vector<std::shared_ptr<TeamSimulator>> allSimulators;
     unsigned int genNumber;
     int teamNumber;
 

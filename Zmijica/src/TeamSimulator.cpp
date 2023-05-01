@@ -6,7 +6,7 @@
 #include "Snake.h"
 #include <iostream>
 
-TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams, int generation)
+TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<std::shared_ptr<Team>> sentTeams, int generation)
 {
     this->mapSize = mapSize;
     this->steps = 0;
@@ -27,13 +27,16 @@ TeamSimulator::TeamSimulator(unsigned int mapSize, std::vector<Team*> sentTeams,
 
         for (int j = 0; j < 2; j++) //no of snakes per team
         {
-
+            
             SnakeBase* snake = new Snake(snakeStartPosition, liveSnakes.size());
             std::shared_ptr<SnakeBase> base = std::shared_ptr<SnakeBase>(snake);
             liveSnakes.push_back(base);
             //liveSnakes.push_back(std::shared_ptr<SnakeBase>(snake));
             this->teams[i]->addSnake(base);
             snakeStartPosition.setLocation(snakeStartPosition.getX(), snakeStartPosition.getY() + Config::mapSize / (sentTeams.size() * 2));
+        }
+        if (i == 0) {
+            this->challengeTeam = this->teams[0];
         }
     }
 
@@ -122,10 +125,10 @@ bool TeamSimulator::step()
     for (int i = 0; i < liveSnakes.size(); i++)
     {
         int a = liveSnakes.size();
-        if (i == 0) {
+        if (i == 0 && teams[0]->getNoOfAliveSnakes() !=0) {
             steps = teams[0]->step(map);
         }
-        else if (i == 2)
+        else if (i == teams[0]->getNoOfAliveSnakes() && teams[1]->getNoOfAliveSnakes() != 0)
             steps = teams[1]->step(map);
 
 
