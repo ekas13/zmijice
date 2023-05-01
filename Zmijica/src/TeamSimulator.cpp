@@ -254,8 +254,12 @@ bool TeamSimulator::step()
                 //teams[(i / 2)]->addToTeamScore(this->steps);//((int)(((float)(this->steps/2)/400.0)*100));
             }
             tempDeadSnakes.push_back(i);
-            this->teams[i / 2]->addDeadSnake(base);
-            this->teams[i / 2]->removeSnakeAt(i);
+            if (teams[0]->getNoOfAliveSnakes() != 0 && i / teams[0]->getNoOfAliveSnakes() == 0) 
+                this->teams[0]->addDeadSnake(base);
+          
+            else 
+                this->teams[1]->addDeadSnake(base);
+            
             //deadSnakes.push_back(currentSnake);
             for (int x = 0; x < mapSize; x++) {     //brisanje nedavno preminule zmije s mape
                 for (int y = 0; y < mapSize; y++) {
@@ -266,8 +270,14 @@ bool TeamSimulator::step()
         }
     }
     std::sort(tempDeadSnakes.rbegin(), tempDeadSnakes.rend());
+    int team0aliveSnakes = teams[0]->getNoOfAliveSnakes();
     for (int i = 0; i < tempDeadSnakes.size(); i++)
     {
+        if (team0aliveSnakes != 0 && tempDeadSnakes[i] / team0aliveSnakes == 0)
+            this->teams[0]->removeSnakeAt(tempDeadSnakes[i]);
+        else 
+            this->teams[1]->removeSnakeAt(tempDeadSnakes[i] - team0aliveSnakes);
+        
         liveSnakes.erase(liveSnakes.begin() + tempDeadSnakes[i]);   // brisanje zmija iz ¾ivih
     }
     

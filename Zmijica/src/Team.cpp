@@ -241,7 +241,7 @@ void Team::removeSnakeAt(int index)
 {
     //printf("remove: %d with %d living", index,this->getNoOfAliveSnakes());
     //this->snakes.erase(std::remove(snakes.begin(), snakes.end(), index), snakes.end());
-    this->snakes.erase(snakes.begin() + (index % this->getNoOfAliveSnakes()));
+    this->snakes.erase(snakes.begin() + index);
 }
 
 

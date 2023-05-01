@@ -11,19 +11,19 @@ std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
     std::shared_ptr<Team> tempTeamChallenge;
     float maxTempTeamChallenge = 0;
     float average = 0;
-
+    int indjeks = 0;
     for (std::shared_ptr <TeamSimulator> s : allSimulators)
     {
         for (std::shared_ptr<Team> t : s->getTeams())
         {
             teams.push_back((Team*)t.get());
             average += t->getTeamScore();
-            if (t->getTeamScore() > challengeTeam->getTeamScore() && t->getTeamScore() > maxTempTeamChallenge) {
+            if (t->getTeamScore() > s->challengeTeam->getTeamScore() && t->getTeamScore() > maxTempTeamChallenge) {
                 tempTeamChallenge = t;
                 maxTempTeamChallenge = t->getTeamScore();
             }
         }
-
+        indjeks++;
     }
     printf("\nAverage: %f", average / (float)(Config::populationSize*this->teamNumber));
     //adjustTeamScores(teams);
@@ -36,7 +36,7 @@ std::vector<Team*> TeamGenerationManager::getAllTeamsSorted()
     printBest10teams(teams);
 
     if (tempTeamChallenge) {
-        printf("NEW CHALLENGE TEAM! - old team score (%d) beat by new team score (%d)", this->challengeTeam->getTeamScore(), tempTeamChallenge->getTeamScore());
+        printf("\n NEW CHALLENGE TEAM!");
         this->challengeTeam = tempTeamChallenge;
     }
 
@@ -163,8 +163,8 @@ void TeamGenerationManager::nextGeneration()
     }
     genNumber++;
 
-    for (Team* sn : newTeams)
-        delete sn;
+    //for (Team* sn : newTeams)
+    //  delete sn;
 }
 
 TeamGenerationManager::TeamGenerationManager()
