@@ -1,62 +1,49 @@
-# Učenje igre Zmija za jednu i više zmija s odabranim modelima učenja i algoritmima ponašanja
+# Kooperativno, natjecateljsko i mješovito kooperativno-natjecateljsko podržano učenje za igru Zmija s više agenata
+
 
 ## Uvod
 
-Ovaj projekt nastao je pod mentorstvom [prof. dr. sc. Domagoja Jakobovića][1] u sklopu kolegija Projekt R koji se podučava na 3. godini preddiplomskog studija Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu.
+Ovaj rad nastao je pod mentorstvom [prof. dr. sc. Domagoja Jakobovića][1] u sklopu kolegija Završni rad koji se podučava na 3. godini preddiplomskog studija Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu.
 
-## Opis projekta
+## Opis 
 
-Glavnih cilj projekta jest učenje i simulacija modela raznih metoda strojnog učenja u okruženju popularne igre Snake.
-Implementirani modeli su:
-- **NN** (*Neural Network*)
+Glavnih cilj projekta jest učenje i simulacija modela raznih metoda strojnog učenja u okruženju popularne igre Snake za više agenata.
+Napravljene su 3 inačice višeagentnog učenja:
+- *Kooperativna inačica*
+- *Natjecateljska inačica*
+- *Mješovita kooperativna natjecateljska inačica*
+* svaka inačica implementirana je na zasebnoj grani (eng. branch) repozitorija
+  
+Implementiran model zmije/tima zmija:
 - **GP** (*Genetic Programming*)
-- **CGP** (*Cartesian Genetic Programming*)
+- ( **NN** (Neural Network) i **CGP** (Cartesian Genetic Programming) implementirani u sklopu Projekta R primjenjivi su samo u Natjecateljskoj inačici i izmjenjivi u  `zmijica.config` datoteci) 
 
-Mogući načini rada uključuju učenje modela da igra u okruženju s dva ili više igrača, kao i protiv čovjeka.
-Također je implementirana i takozvana "hamiltonska" zmija koja upotrebljava algoritam pronalaženja Hamiltonovog ciklusa za navigiranje po mapi.
 
 ## Pokretanje
 
-Izvršna verzija programa za windows_x64 platformu dostupna je [ovdje][2].
-Sve dostupne verzije potražite u [`Releases`][3] kategoriji repozitorija.
+Za pregledavanje, uređivanje i kompajliranje izvornog koda preporuča se [Visual studio][2].
 
-Za pregledavanje, uređivanje i kompajliranje izvornog koda preporuča se [Visual studio][4].
+Prije pokretanja `Zmijica.exe` moguće je konfigurirati parametre u `zmijica.config`. Neki od parametara uključuju veličinu mape, broj zmija, konfiguraciju modela...
 
-Prije pokretanja `Zmijica.exe` moguće je konfigurirati parametre u `zmijica.config`. Neki od parametara uključuju način rada, veličinu mape, broj zmija, konfiguraciju svakog modela...
-U toj datoteci je također moguće postaviti pokretanje spremljenih modela iz `./saves`.
-
-## Kontrole
-
-### *Learn* način rada
+### Kontrole za grafički prikaz (omogućen samo u Natjecateljskoj verziji rada)
 - `x` - ubrzanje rada programa
 - `y` - usporavanje rada programa
 - `s` - spremanje modela
 
-### *Play* način rada
-- `↑`,`↓`,`←` ,`→`  - upravljanje (ako je igrač ljudski)
-- `r` - ponovno pokretanje
 
 ## Komponentni prikaz
 
-![alt text](https://i.ibb.co/jMsgmRy/Picture1.png)
+**Timske komponente**
+![image](https://github.com/ekas13/zmijice_private/assets/73114843/fbc5e753-e536-455b-bc19-d15f96814f1f)
+
+**Natjecateljska inačica**
+![image](https://github.com/ekas13/zmijice_private/assets/73114843/a6e56171-4b2b-4a91-a4b2-781f0a6b6e20)
 
 #### Prikaz korisničkog sučelja
 ![alt-text](https://i.ibb.co/p12BhhG/zmija1.png)
 
 ## Korištene tehnologije
-
 - **C++**
-- **SFML**
-
-## Tim
-
-- Mislav Jelić
-- Eva Kaštelan
-- Luka Nestić
-- Hana Ujčić
-- Joško Vrsalović
 
 [1]: http://www.zemris.fer.hr/~yeti/index.html
-[2]: https://gitlab.com/api/v4/projects/40715631/packages/generic/Zmijica/1.0/Zmijica_v1.0_windows_x64.zip
-[3]: https://gitlab.com/lnestic/projekt-r-zmijica/-/releases
-[4]: https://visualstudio.microsoft.com/
+[2]: https://visualstudio.microsoft.com/
