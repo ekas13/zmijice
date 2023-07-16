@@ -21,7 +21,7 @@ Implementiran model zmije/tima zmija:
 
 ## Pokretanje
 
-Za pregledavanje, uređivanje i kompajliranje izvornog koda preporuča se [Visual studio][4].
+Za pregledavanje, uređivanje i kompajliranje izvornog koda preporuča se [Visual studio][2].
 
 Prije pokretanja `Zmijica.exe` moguće je konfigurirati parametre u `zmijica.config`. Neki od parametara uključuju veličinu mape, broj zmija, konfiguraciju modela...
 
